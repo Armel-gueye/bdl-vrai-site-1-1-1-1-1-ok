@@ -25,7 +25,7 @@ export const BinkooChatbot: React.FC = () => {
       }, 500);
     }
 
-    setTimeout(hideWelcomeBubbles, 7000);
+    setTimeout(hideWelcomeBubbles, 10000);
 
     function hideWelcomeBubblesOnOpen() {
       if (welcomeBubbles && !welcomeBubbles.classList.contains('hide')) {
