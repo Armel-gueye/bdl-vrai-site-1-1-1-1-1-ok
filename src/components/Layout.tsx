@@ -5,6 +5,7 @@ import { Footer } from '@/components/ui/footer-section';
 import { motion, AnimatePresence } from 'framer-motion';
 import { BubbleMenu } from '@/components/ui/BubbleMenu';
 import { DynamicNavigation } from '@/components/lightswind/dynamic-navigation';
+import { BinkooChatbot } from '@/components/BinkooChatbot';
 
 const Layout: React.FC<{
   children: React.ReactNode;
@@ -141,6 +142,9 @@ const Layout: React.FC<{
 
       {/* Footer */}
       <Footer />
+
+      {/* Chatbot - appears on all pages */}
+      <BinkooChatbot />
     </div>;
 };
 export default Layout;
