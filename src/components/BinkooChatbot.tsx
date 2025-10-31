@@ -562,7 +562,14 @@ export const BinkooChatbot: React.FC = () => {
             }
 
             #binkoo-welcome-bubbles {
-                display: none;
+                bottom: 84px;
+                right: 16px;
+                max-width: calc(100vw - 88px);
+            }
+
+            .welcome-bubble {
+                font-size: 12px;
+                padding: 10px 14px;
             }
         }
       `}} />
@@ -573,7 +580,7 @@ export const BinkooChatbot: React.FC = () => {
           👋🏿 Salut! Comment puis-je aider mon humain préféré ? 😻
         </div>
         <div className="welcome-bubble">
-          Au fait, nous pouvons créer un agent comme ça pour VOTRE site ! 😮
+          Au fait, Nous pouvons créer un agent comme ça pour VOTRE site ! 😮
         </div>
       </div>
 
