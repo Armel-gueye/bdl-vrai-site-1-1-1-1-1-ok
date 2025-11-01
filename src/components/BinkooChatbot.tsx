@@ -577,7 +577,7 @@ export const BinkooChatbot: React.FC = () => {
       {/* Bulles de bienvenue */}
       <div id="binkoo-welcome-bubbles">
         <div className="welcome-bubble">
-          👋🏿 Salut! Comment puis-je aider mon humain préféré ? 😻
+          👋🏿 Salut! Comment va mon humain préféré ? 😻
         </div>
         <div className="welcome-bubble">
           Au fait, Nous pouvons créer un agent comme ça pour VOTRE site ! 😮
