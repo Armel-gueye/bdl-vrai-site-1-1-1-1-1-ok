@@ -600,7 +600,7 @@ export const BinkooChatbot: React.FC = () => {
 
       {/* Bouton de toggle */}
       <button id="binkoo-chat-toggle" aria-label="Ouvrir le chat">
-        <img src="https://i.postimg.cc/VLRRc9K5/IMG-1941.jpg" alt="Bino" />
+        <img src="https://i.postimg.cc/PrVrcGm4/IMG-2203-modified-min.png" />
       </button>
 
       {/* Fenêtre de chat */}
