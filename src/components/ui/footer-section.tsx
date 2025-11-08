@@ -4,6 +4,13 @@ import type { ComponentProps, ReactNode } from 'react';
 import { motion, useReducedMotion } from 'motion/react';
 import { Facebook, Instagram, Linkedin, MessageSquare, LucideIcon } from 'lucide-react';
 
+// Custom TikTok Icon Component
+const TikTokIcon = ({ className }: { className?: string }) => (
+  <svg className={className} fill="currentColor" viewBox="0 0 24 24">
+    <path d="M19.59 6.69a4.83 4.83 0 01-3.77-4.25V2h-3.45v13.67a2.89 2.89 0 01-5.2 1.74 2.89 2.89 0 012.31-4.64 2.93 2.93 0 01.88.13V9.4a6.84 6.84 0 00-1-.05A6.33 6.33 0 005 20.1a6.34 6.34 0 0010.86-4.43v-7a8.16 8.16 0 004.77 1.52v-3.4a4.85 4.85 0 01-1-.1z" />
+  </svg>
+);
+
 interface FooterLink {
   title: string;
   href: string;
@@ -39,7 +46,8 @@ const footerLinks: FooterSection[] = [
   links: [
   { title: 'LinkedIn', href: 'https://www.linkedin.com/in/binkoo-digital-lab-5a012b385?utm_source=share&utm_campaign=share_via&utm_content=profile&utm_medium=ios_app', icon: Linkedin },
   { title: 'Instagram', href: 'https://www.instagram.com/binkoo_digital_lab?igsh=MXcyYjRpbHBrbjh1ag%3D%3D&utm_source=qr', icon: Instagram },
-  { title: 'Facebook', href: 'https://www.facebook.com/share/1JPaSH1STA/?mibextid=wwXIfr', icon: Facebook }]
+  { title: 'Facebook', href: 'https://www.facebook.com/share/1JPaSH1STA/?mibextid=wwXIfr', icon: Facebook },
+  { title: 'TikTok', href: 'https://www.tiktok.com/@binkoo.digital.lab?_t=ZM-90kNEp9sTGt&_r=1', icon: TikTokIcon }]
 
 },
 {
