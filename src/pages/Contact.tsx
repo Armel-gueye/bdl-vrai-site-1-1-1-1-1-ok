@@ -48,7 +48,7 @@ const Contact: React.FC = () => {
   const quickActions = [
   {
     title: 'Devis Express',
-    description: 'Obtenez une estimation rapide pour votre projet',
+    description: 'Obtenez une estimation rapide pour votre projet sur WhatsApp',
     cta: 'Demander un devis',
     link: 'whatsapp'
   },
