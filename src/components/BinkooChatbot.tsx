@@ -620,7 +620,7 @@ export const BinkooChatbot: React.FC = () => {
         {/* Messages */}
         <div id="binkoo-chat-messages">
           <div className="chat-message bot">
-            Bonjour ! 👋 Je suis Bino, l'assistant de BinkoO Digital Lab. Comment puis-je vous aider aujourd'hui ?
+            Hey ! 👋 Je suis Bino, l'assistant de BinkoO Digital Lab. Comment puis-je vous aider aujourd'hui ?
           </div>
         </div>
 
