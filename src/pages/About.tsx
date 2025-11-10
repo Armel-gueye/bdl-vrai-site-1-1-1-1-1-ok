@@ -387,7 +387,7 @@ const About: React.FC = () => {
                 background: 'linear-gradient(225deg, hsla(0, 96%, 56%, 1) 0%, hsla(0, 92%, 20%, 1) 80%)'
               }}
             >
-              <h2 className="text-3xl md:text-4xl font-bold mb-5 md:mb-6 text-white">Notre Engagement</h2>
+              <h2 className="text-3xl md:text-4xl font-bold mb-5 md:mb-6 text-black">Notre Engagement</h2>
               <AnimatedParagraph delay={0.2}>
               <div className="text-sm md:text-base lg:text-lg max-w-4xl mx-auto leading-relaxed space-y-4 text-white">
                 <p className="text-white">
