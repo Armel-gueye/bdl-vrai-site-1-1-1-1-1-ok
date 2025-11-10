@@ -204,25 +204,11 @@ const Services: React.FC = () => {
           viewport={{ once: true }}
           transition={{ duration: 0.6 }}>
 
-          <h2 className="text-3xl md:text-4xl lg:text-5xl font-bold mb-5 md:mb-6">
-            Prêt à Transformer Votre Projet ?
-          </h2>
           <AnimatedParagraph delay={0.2}>
-          <p className="text-base md:text-lg text-muted-foreground mb-8 md:mb-10 max-w-2xl mx-auto leading-relaxed">
-            Contactez-nous dès aujourd'hui pour discuter de vos besoins et découvrir 
-            comment nous pouvons vous accompagner dans votre transformation digitale.
+          <p className="text-xl md:text-2xl lg:text-3xl font-semibold text-foreground max-w-3xl mx-auto leading-relaxed">
+            Chaque solution que nous proposons est pensée pour simplifier votre quotidien, accélérer vos résultats et renforcer votre impact digital.
           </p>
           </AnimatedParagraph>
-          <a
-            href="#"
-            onClick={handleWhatsAppClick}
-            className="inline-block">
-
-            <Button size="lg">
-              Démarrer votre projet
-              <ArrowRight className="ml-2 h-5 w-5" />
-            </Button>
-          </a>
         </motion.div>
         </AnimatedSection>
       </div>
