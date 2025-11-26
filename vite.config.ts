@@ -165,7 +165,12 @@ async function handleContactApi(req: any, res: any) {
       to: "Binkoodigitallab@gmail.com",
       subject: sanitizedSubject || `Nouvelle demande de contact: ${fullName}`,
       html: htmlContent,
-      text: `Nom: ${fullName}\nEmail: ${sanitizedEmail}\n${sanitizedSubject ? `Sujet: ${sanitizedSubject}\n` : ''}\nMessage:\n${sanitizedMessage}`,
+      text: `Nom: ${fullName}
+Email: ${sanitizedEmail}
+${sanitizedSubject ? `Sujet: ${sanitizedSubject}
+` : ''}
+Message:
+${sanitizedMessage}`,
     });
 
     // Send confirmation to user (ignore failure silently)
@@ -237,6 +242,48 @@ export default defineConfig({
     alias: {
       "@": path.resolve(__dirname, "./src"),
     },
+  },
+  build: {
+    rollupOptions: {
+      output: {
+        manualChunks: {
+          // Séparer les vendors lourds
+          'vendor-react': ['react', 'react-dom', 'react-router-dom'],
+          'vendor-ui': [
+            '@radix-ui/react-dialog',
+            '@radix-ui/react-dropdown-menu',
+            '@radix-ui/react-select',
+            '@radix-ui/react-tabs',
+            '@radix-ui/react-toast',
+          ],
+          'vendor-animation': ['framer-motion', 'gsap'],
+          'vendor-spline': ['@splinetool/react-spline', '@splinetool/runtime'],
+        },
+      },
+    },
+    // Optimiser la taille des chunks
+    chunkSizeWarningLimit: 1000,
+    // Minification agressive
+    minify: 'terser',
+    terserOptions: {
+      compress: {
+        drop_console: true, // Retire les console.log en production
+        drop_debugger: true,
+      },
+    },
+  },
+  // Optimiser les dépendances
+  optimizeDeps: {
+    include: [
+      'react',
+      'react-dom',
+      'react-router-dom',
+      'framer-motion',
+    ],
+    exclude: [
+      '@splinetool/react-spline',
+      '@splinetool/runtime',
+    ],
   },
 });
 // Orchids restart: 1762640463216

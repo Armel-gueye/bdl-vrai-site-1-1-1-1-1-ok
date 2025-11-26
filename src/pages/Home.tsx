@@ -9,6 +9,7 @@ import TiltedCard from '@/components/ui/TiltedCard';
 import { motion } from 'framer-motion';
 import { AnimatedSection, AnimatedParagraph, AnimatedImage } from '@/components/AnimatedSection';
 import { Contact2 } from '@/components/Contact2';
+import { LazyLottieIframe } from '@/components/ui/LazyLottieIframe';
 
 export default function Home() {
   const whatsappUrl = 'https://api.whatsapp.com/send?phone=22644323841';
@@ -195,11 +196,10 @@ export default function Home() {
                 <AnimatedImage delay={0.2}>
                 <div className="order-1">
                   <div className="aspect-[4/3] rounded-2xl overflow-hidden max-w-sm md:max-w-md lg:max-w-full mx-auto">
-                    <iframe
-                    src="https://lottie.host/embed/578e0983-2659-40c2-88cf-989315c689b0/KFhpEbNLZ1.lottie"
-                    style={{ width: '100%', height: '100%', border: 'none' }}
-                    title="Animation IA & Automatisation">
-                  </iframe>
+                    <LazyLottieIframe
+                      src="https://lottie.host/embed/578e0983-2659-40c2-88cf-989315c689b0/KFhpEbNLZ1.lottie"
+                      title="Animation IA & Automatisation"
+                    />
                   </div>
                 </div>
                 </AnimatedImage>
@@ -273,11 +273,10 @@ export default function Home() {
                 <AnimatedImage delay={0.2}>
                 <div className="order-1 lg:order-2">
                   <div className="aspect-[4/3] rounded-2xl overflow-hidden max-w-sm md:max-w-md lg:max-w-full mx-auto">
-                    <iframe
-                    src="https://lottie.host/embed/5094abd8-d328-41f0-82f9-89d30acf9f95/D5m04v3FBU.lottie"
-                    style={{ width: '100%', height: '100%', border: 'none' }}
-                    title="Animation Création de Sites Web">
-                  </iframe>
+                    <LazyLottieIframe
+                      src="https://lottie.host/embed/5094abd8-d328-41f0-82f9-89d30acf9f95/D5m04v3FBU.lottie"
+                      title="Animation Création de Sites Web"
+                    />
                   </div>
                 </div>
                 </AnimatedImage>
@@ -293,11 +292,10 @@ export default function Home() {
                 <AnimatedImage delay={0.2}>
                 <div className="order-1">
                   <div className="aspect-[4/3] rounded-2xl overflow-hidden max-w-sm md:max-w-md lg:max-w-full mx-auto">
-                    <iframe
-                    src="https://lottie.host/embed/3d0f14dd-a932-47db-8392-075f75c57f99/c2MitpaHjN.lottie"
-                    style={{ width: '100%', height: '100%', border: 'none' }}
-                    title="Animation Création de Visuels">
-                  </iframe>
+                    <LazyLottieIframe
+                      src="https://lottie.host/embed/3d0f14dd-a932-47db-8392-075f75c57f99/c2MitpaHjN.lottie"
+                      title="Animation Création de Visuels"
+                    />
                   </div>
                 </div>
                 </AnimatedImage>
@@ -501,9 +499,8 @@ export default function Home() {
             {/* Left Image */}
             <AnimatedImage delay={0.2}>
             <div className="aspect-[4/3] bg-gray-50 rounded-2xl border border-border shadow-lg overflow-hidden">
-              <iframe
+              <LazyLottieIframe
                 src="https://lottie.host/embed/8afcc5c0-fac9-480b-80af-ab3ec29994a1/PW1G8XwTya.lottie"
-                style={{ width: '100%', height: '100%', border: 'none' }}
                 title="Animation Pourquoi Nous Choisir"
               />
             </div>

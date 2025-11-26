@@ -7,15 +7,7 @@ import Carousel from '@/components/ui/Carousel';
 import { FiTarget, FiShield, FiUsers, FiLock, FiDollarSign } from 'react-icons/fi';
 import { Highlighter } from '@/components/ui/highlighter';
 import { AnimatedSection, AnimatedParagraph, AnimatedImage } from '@/components/AnimatedSection';
-
-// Declare the custom element for TypeScript
-declare global {
-  namespace JSX {
-    interface IntrinsicElements {
-      'dotlottie-wc': any;
-    }
-  }
-}
+import { LazyLottie } from '@/components/ui/LazyLottie';
 
 const About: React.FC = () => {
   const [currentTestimonial, setCurrentTestimonial] = useState(0);
@@ -92,18 +84,6 @@ const About: React.FC = () => {
       icon: <FiDollarSign className="carousel-icon" />
     }
   ];
-
-  // Load Lottie script
-  useEffect(() => {
-    const script = document.createElement('script');
-    script.src = 'https://unpkg.com/@lottiefiles/dotlottie-wc@0.8.5/dist/dotlottie-wc.js';
-    script.type = 'module';
-    document.body.appendChild(script);
-    
-    return () => {
-      document.body.removeChild(script);
-    };
-  }, []);
 
   useEffect(() => {
     const interval = setInterval(() => {
@@ -217,11 +197,9 @@ const About: React.FC = () => {
           whileInView={{ opacity: 1, y: 0 }}
           viewport={{ once: true }}
           transition={{ duration: 0.6 }}>
-          <dotlottie-wc 
-            src="https://lottie.host/e4190787-d674-4c67-bc19-f959156ebc4a/UkK8s9D9QX.lottie" 
+          <LazyLottie
+            src="https://lottie.host/e4190787-d674-4c67-bc19-f959156ebc4a/UkK8s9D9QX.lottie"
             style={{ width: '300px', height: '300px' }}
-            autoplay 
-            loop
           />
         </motion.div>
         </AnimatedImage>
@@ -259,11 +237,9 @@ const About: React.FC = () => {
           whileInView={{ opacity: 1, y: 0 }}
           viewport={{ once: true }}
           transition={{ duration: 0.6 }}>
-          <dotlottie-wc 
-            src="https://lottie.host/e1dda74e-af40-4bc3-be8d-9e02b572de79/Opm4VaEjvE.lottie" 
+          <LazyLottie
+            src="https://lottie.host/e1dda74e-af40-4bc3-be8d-9e02b572de79/Opm4VaEjvE.lottie"
             style={{ width: '280px', height: '280px', maxWidth: '100%' }}
-            autoplay 
-            loop
           />
         </motion.div>
         </AnimatedImage>
