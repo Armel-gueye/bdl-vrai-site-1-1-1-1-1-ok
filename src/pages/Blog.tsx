@@ -1,176 +1,53 @@
-import { useState } from 'react';
+import { useState, useEffect } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
 import { Calendar, ChevronDown, ArrowRight, Clock } from 'lucide-react';
 import { AnimatedSection, AnimatedParagraph } from '@/components/AnimatedSection';
 import { Link } from 'react-router-dom';
+import { 
+  getPosts, 
+  groupPostsByMonth,
+  type BlogPost,
+  stripHtmlTags,
+  calculateReadTime,
+  extractText,
+  getFeaturedImage,
+  getMonthFromDate 
+} from '@/services/blogService';
 
-// Interface WordPress API compatible
-interface WordPressArticle {
-  id: number;
-  title: { rendered: string } | string;
-  excerpt: { rendered: string } | string;
-  content: { rendered: string } | string;
-  date: string;
-  month?: string;
-  readTime?: string;
-  image?: string;
-  _embedded?: {
-    'wp:featuredmedia'?: [{ source_url: string }];
-  };
-}
-
-// Helper: Extraire le texte brut depuis HTML WordPress
-const stripHtmlTags = (html: string): string => {
-  return html.replace(/<[^>]*>/g, '').replace(/&nbsp;/g, ' ').trim();
-};
-
-// Helper: Calculer le temps de lecture depuis contenu HTML
-const calculateReadTime = (htmlContent: string): string => {
-  const text = stripHtmlTags(htmlContent);
-  const words = text.split(/\s+/).filter(w => w.length > 0).length;
-  const minutes = Math.ceil(words / 200);
-  return `${minutes} min`;
-};
-
-// Helper: Extraire le texte depuis propriété WordPress (rendered ou string)
-const extractText = (field: { rendered: string } | string | undefined): string => {
-  if (!field) return '';
-  return typeof field === 'string' ? field : field.rendered;
-};
-
-// Helper: Obtenir l'image featured WordPress ou fallback
-const getFeaturedImage = (article: WordPressArticle): string => {
-  return article._embedded?.['wp:featuredmedia']?.[0]?.source_url 
-         || article.image 
-         || '/images/fallback.jpg';
-};
-
-// Helper: Formater le mois depuis date ISO WordPress
-const getMonthFromDate = (dateString: string): string => {
-  const date = new Date(dateString);
-  return date.toLocaleDateString('fr-FR', { month: 'long', year: 'numeric' })
-    .split(' ')
-    .map(word => word.charAt(0).toUpperCase() + word.slice(1))
-    .join(' ');
-};
-
-// Mock data pour les articles (compatible structure WordPress)
-const articles: WordPressArticle[] = [
-  {
-    id: 1,
-    title: { rendered: "Comment l'IA transforme le marketing digital en 2025" },
-    excerpt: { rendered: "Découvrez comment l'intelligence artificielle révolutionne les stratégies marketing et booste les conversions des entreprises modernes." },
-    content: { rendered: "Découvrez comment l'intelligence artificielle révolutionne les stratégies marketing et booste les conversions des entreprises modernes. L'IA permet de personnaliser les campagnes, d'optimiser les budgets et de prédire les comportements des clients. Cela transforme le marketing digital en une expérience plus intelligente et plus efficace." },
-    date: "2025-01-15",
-    month: "Janvier 2025",
-    readTime: "5 min"
-  },
-  {
-    id: 2,
-    title: { rendered: "5 tendances web design à adopter cette année" },
-    excerpt: { rendered: "Les tendances qui domineront le design web en 2025 : minimalisme, animations fluides, et expériences immersives." },
-    content: { rendered: "Les tendances qui domineront le design web en 2025 : minimalisme, animations fluides, et expériences immersives. Le design moderne se concentre sur l'expérience utilisateur, la simplicité et l'accessibilité. Ces tendances permettent de créer des interfaces qui captivent et convainquent." },
-    date: "2025-01-10",
-    month: "Janvier 2025",
-    readTime: "4 min"
-  },
-  {
-    id: 3,
-    title: { rendered: "Automatisation : gagnez 10h par semaine" },
-    excerpt: { rendered: "Comment automatiser vos tâches répétitives et libérer du temps pour ce qui compte vraiment dans votre business." },
-    content: { rendered: "Comment automatiser vos tâches répétitives et libérer du temps pour ce qui compte vraiment dans votre business. L'automatisation des processus répétitifs permet de gagner du temps, de réduire les erreurs humaines et de se concentrer sur les aspects stratégiques de votre entreprise." },
-    date: "2025-01-05",
-    month: "Janvier 2025",
-    readTime: "6 min"
-  },
-  {
-    id: 4,
-    title: { rendered: "Landing page parfaite : le guide complet" },
-    excerpt: { rendered: "Les éléments essentiels d'une landing page qui convertit à plus de 15% : structure, copywriting et CTA." },
-    content: { rendered: "Les éléments essentiels d'une landing page qui convertit à plus de 15% : structure, copywriting et CTA. Une bonne landing page est conçue pour captiver, convaincre et convertir. Elle doit être claire, concise et alignée avec les objectifs de conversion." },
-    date: "2024-12-28",
-    month: "Décembre 2024",
-    readTime: "7 min"
-  },
-  {
-    id: 5,
-    title: { rendered: "Chatbots IA : le nouveau standard du service client" },
-    excerpt: { rendered: "Pourquoi intégrer un chatbot intelligent n'est plus une option mais une nécessité pour rester compétitif." },
-    content: { rendered: "Pourquoi intégrer un chatbot intelligent n'est plus une option mais une nécessité pour rester compétitif. Les chatbots IA offrent un service client 24/7, réduisent les délais de réponse et permettent de gérer une grande quantité de demandes simultanément." },
-    date: "2024-12-20",
-    month: "Décembre 2024",
-    readTime: "5 min"
-  },
-  {
-    id: 6,
-    title: { rendered: "SEO en 2025 : ce qui a vraiment changé" },
-    excerpt: { rendered: "Les nouvelles règles du référencement naturel avec l'arrivée de l'IA dans les moteurs de recherche." },
-    content: { rendered: "Les nouvelles règles du référencement naturel avec l'arrivée de l'IA dans les moteurs de recherche. L'IA permet de mieux comprendre les intentions des utilisateurs, d'optimiser les contenus et de fournir des résultats plus pertinents." },
-    date: "2024-12-15",
-    month: "Décembre 2024",
-    readTime: "8 min"
-  },
-  {
-    id: 7,
-    title: { rendered: "Branding digital : créer une identité mémorable" },
-    excerpt: { rendered: "Comment construire une marque forte qui se démarque dans un monde digital saturé d'informations." },
-    content: { rendered: "Comment construire une marque forte qui se démarque dans un monde digital saturé d'informations. Un bon branding digital se concentre sur la cohérence, la valeur perçue et l'expérience utilisateur unique." },
-    date: "2024-12-05",
-    month: "Décembre 2024",
-    readTime: "6 min"
-  },
-  {
-    id: 8,
-    title: { rendered: "Performance web : chaque milliseconde compte" },
-    excerpt: { rendered: "L'impact de la vitesse de chargement sur vos conversions et comment optimiser votre site pour le speed." },
-    content: { rendered: "L'impact de la vitesse de chargement sur vos conversions et comment optimiser votre site pour le speed. Une vitesse de chargement rapide améliore l'expérience utilisateur, réduit le taux de rebond et augmente les conversions." },
-    date: "2024-11-25",
-    month: "Novembre 2024",
-    readTime: "5 min"
-  },
-  {
-    id: 9,
-    title: { rendered: "L'art du copywriting persuasif" },
-    excerpt: { rendered: "Techniques éprouvées pour écrire des textes qui captivent, convainquent et convertissent vos visiteurs." },
-    content: { rendered: "Techniques éprouvées pour écrire des textes qui captivent, convainquent et convertissent vos visiteurs. Le copywriting efficace utilise des techniques de persuasion, des arguments forts et une structure claire pour influencer les décisions des lecteurs." },
-    date: "2024-11-18",
-    month: "Novembre 2024",
-    readTime: "7 min"
-  },
-  {
-    id: 10,
-    title: { rendered: "Réseaux sociaux : stratégie gagnante 2025" },
-    excerpt: { rendered: "Comment créer du contenu engageant et développer une communauté fidèle autour de votre marque." },
-    content: { rendered: "Comment créer du contenu engageant et développer une communauté fidèle autour de votre marque. Le contenu de qualité, partagé régulièrement, crée une communauté engagée qui devient un atout stratégique pour la croissance." },
-    date: "2024-11-10",
-    month: "Novembre 2024",
-    readTime: "6 min"
-  },
-  {
-    id: 11,
-    title: { rendered: "E-commerce : booster vos ventes en ligne" },
-    excerpt: { rendered: "Les stratégies essentielles pour transformer votre boutique en ligne en machine à ventes." },
-    content: { rendered: "Les stratégies essentielles pour transformer votre boutique en ligne en machine à ventes. L'optimisation de l'expérience client, la personnalisation des recommandations et la gestion des stocks efficace sont des clés de succès." },
-    date: "2024-11-02",
-    month: "Novembre 2024",
-    readTime: "8 min"
-  }
-];
-
-// Grouper les articles par mois (avec support WordPress dates)
-const articlesByMonth = articles.reduce((acc, article) => {
-  const month = article.month || getMonthFromDate(article.date);
-  if (!acc[month]) {
-    acc[month] = [];
-  }
-  acc[month].push(article);
-  return acc;
-}, {} as Record<string, WordPressArticle[]>);
-
-const months = Object.keys(articlesByMonth);
+// Les interfaces et helpers sont maintenant dans blogService.ts
 
 export default function Blog() {
-  const [openMonth, setOpenMonth] = useState<string | null>(months[0]);
+  // État pour les articles (chargés depuis le service)
+  const [articles, setArticles] = useState<BlogPost[]>([]);
+  const [articlesByMonth, setArticlesByMonth] = useState<Record<string, BlogPost[]>>({});
+  const [months, setMonths] = useState<string[]>([]);
+  const [isLoading, setIsLoading] = useState(true);
+  
+  const [openMonth, setOpenMonth] = useState<string | null>(null);
+  
+  // Charger les articles au montage du composant
+  useEffect(() => {
+    const loadPosts = async () => {
+      try {
+        setIsLoading(true);
+        const posts = await getPosts();
+        setArticles(posts);
+        
+        const grouped = groupPostsByMonth(posts);
+        setArticlesByMonth(grouped);
+        
+        const monthKeys = Object.keys(grouped);
+        setMonths(monthKeys);
+        setOpenMonth(monthKeys[0] || null);
+      } catch (error) {
+        console.error('Erreur lors du chargement des articles:', error);
+      } finally {
+        setIsLoading(false);
+      }
+    };
+    
+    loadPosts();
+  }, []);
   
   // Les 3 derniers articles
   const latestArticles = articles.slice(0, 3);
