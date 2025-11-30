@@ -155,7 +155,7 @@ const Realisations: React.FC = () => {
                 <div className="overflow-visible h-full flex flex-col">
                   {/* Project Folder - Mobile optimized positioning */}
                   <AnimatedImage delay={0.2}>
-                  <div className="min-h-[300px] sm:min-h-[340px] md:min-h-[400px] lg:min-h-[440px] flex items-center justify-center overflow-visible pt-6 sm:pt-0">
+                  <div className="min-h-[300px] sm:min-h-[340px] md:min-h-[400px] lg:min-h-[440px] flex items-center justify-center overflow-visible pt-10 sm:pt-4">
                     <Folder items={project.folderImages} />
                   </div>
                   </AnimatedImage>
