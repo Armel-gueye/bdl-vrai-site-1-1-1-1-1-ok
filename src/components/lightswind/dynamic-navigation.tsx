@@ -48,9 +48,9 @@ export const DynamicNavigation: React.FC<DynamicNavigationProps> = ({
               >
                 {/* Background hover effect */}
                 <AnimatePresence>
-                  {(isHovered || (isActive && !isAnyHovered)) && (
+                  {(isHovered || isActive) && (
                     <motion.div
-                      layoutId={isActive && !isAnyHovered ? "active-pill" : "hover-pill"}
+                      layoutId={isHovered ? "hover-pill" : "active-pill"}
                       className="absolute inset-0 rounded-full bg-primary"
                       initial={{ opacity: 0, scale: 0.8 }}
                       animate={{ opacity: 1, scale: 1 }}
@@ -64,10 +64,10 @@ export const DynamicNavigation: React.FC<DynamicNavigationProps> = ({
                   )}
                 </AnimatePresence>
 
-                {/* Text - Only white when active and not hovering anything else */}
+                {/* Text - White when hovered or active */}
                 <span
                   className={`relative z-10 uppercase tracking-wide transition-colors duration-200 ${
-                    isActive && !isAnyHovered
+                    (isHovered || isActive)
                       ? 'text-primary-foreground'
                       : 'text-foreground'
                   }`}

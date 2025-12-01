@@ -29,11 +29,11 @@ const Layout: React.FC<{
     name: 'Services',
     path: '/services'
   }, {
-    name: 'Portfolio',
-    path: '/realisations'
-  }, {
     name: 'Blog',
     path: '/blog'
+  }, {
+    name: 'Portfolio',
+    path: '/realisations'
   }, {
     name: 'A Propos',
     path: '/a-propos'
@@ -59,17 +59,17 @@ const Layout: React.FC<{
       hoverStyles: { bgColor: '#FF2B00', textColor: '#ffffff' }
     },
     {
-      label: 'portfolio',
-      href: '/realisations',
-      ariaLabel: 'Portfolio',
-      rotation: 8,
-      hoverStyles: { bgColor: '#FF2B00', textColor: '#ffffff' }
-    },
-    {
       label: 'blog',
       href: '/blog',
       ariaLabel: 'Blog',
       rotation: -8,
+      hoverStyles: { bgColor: '#FF2B00', textColor: '#ffffff' }
+    },
+    {
+      label: 'portfolio',
+      href: '/realisations',
+      ariaLabel: 'Portfolio',
+      rotation: 8,
       hoverStyles: { bgColor: '#FF2B00', textColor: '#ffffff' }
     },
     {
