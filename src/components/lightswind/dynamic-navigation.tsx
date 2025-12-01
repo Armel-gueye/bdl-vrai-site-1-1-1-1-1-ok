@@ -47,22 +47,15 @@ export const DynamicNavigation: React.FC<DynamicNavigationProps> = ({
                 onMouseLeave={() => setHoveredIndex(null)}
               >
                 {/* Background effect - either hover or active */}
-                <AnimatePresence mode="wait">
-                  {(isHovered || (isActive && !isAnyHovered)) && (
-                    <motion.div
-                      layoutId="nav-pill"
-                      className="absolute inset-0 rounded-full bg-primary"
-                      initial={{ opacity: 0, scale: 0.8 }}
-                      animate={{ opacity: 1, scale: 1 }}
-                      exit={{ opacity: 0, scale: 0.8 }}
-                      transition={{
-                        type: "spring",
-                        stiffness: 400,
-                        damping: 30
-                      }}
-                    />
-                  )}
-                </AnimatePresence>
+                {(isHovered || (isActive && !isAnyHovered)) && (
+                  <motion.div
+                    className="absolute inset-0 rounded-full bg-primary"
+                    initial={{ opacity: 0 }}
+                    animate={{ opacity: 1 }}
+                    exit={{ opacity: 0 }}
+                    transition={{ duration: 0.2 }}
+                  />
+                )}
 
                 {/* Text - White when hovered or active */}
                 <span
