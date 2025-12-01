@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import { Link, useLocation } from 'react-router-dom';
 import { motion, AnimatePresence } from 'framer-motion';
 
@@ -20,6 +20,11 @@ export const DynamicNavigation: React.FC<DynamicNavigationProps> = ({
 }) => {
   const location = useLocation();
   const [hoveredIndex, setHoveredIndex] = useState<number | null>(null);
+
+  // Reset hover state when location changes
+  useEffect(() => {
+    setHoveredIndex(null);
+  }, [location]);
 
   return (
     <nav className={`relative ${className}`}>
@@ -46,16 +51,41 @@ export const DynamicNavigation: React.FC<DynamicNavigationProps> = ({
                 onMouseEnter={() => setHoveredIndex(index)}
                 onMouseLeave={() => setHoveredIndex(null)}
               >
-                {/* Background effect - either hover or active */}
-                {(isHovered || (isActive && !isAnyHovered)) && (
-                  <motion.div
-                    className="absolute inset-0 rounded-full bg-primary"
-                    initial={{ opacity: 0 }}
-                    animate={{ opacity: 1 }}
-                    exit={{ opacity: 0 }}
-                    transition={{ duration: 0.2 }}
-                  />
-                )}
+                {/* Background hover effect */}
+                <AnimatePresence>
+                  {isHovered && (
+                    <motion.div
+                      layoutId="hover-pill"
+                      className="absolute inset-0 rounded-full bg-primary"
+                      initial={{ opacity: 0, scale: 0.8 }}
+                      animate={{ opacity: 1, scale: 1 }}
+                      exit={{ opacity: 0, scale: 0.8 }}
+                      transition={{
+                        type: "spring",
+                        stiffness: 400,
+                        damping: 30
+                      }}
+                    />
+                  )}
+                </AnimatePresence>
+
+                {/* Active indicator (only when not hovering) */}
+                <AnimatePresence>
+                  {isActive && !isAnyHovered && (
+                    <motion.div
+                      layoutId="active-pill"
+                      className="absolute inset-0 rounded-full bg-primary"
+                      initial={{ opacity: 0, scale: 0.8 }}
+                      animate={{ opacity: 1, scale: 1 }}
+                      exit={{ opacity: 0, scale: 0.8 }}
+                      transition={{
+                        type: "spring",
+                        stiffness: 400,
+                        damping: 30
+                      }}
+                    />
+                  )}
+                </AnimatePresence>
 
                 {/* Text - White when hovered or active */}
                 <span
