@@ -30,7 +30,7 @@ const Realisations: React.FC = () => {
     />,
     <img 
       key="binkoo-2" 
-      src="https://slelguoygbfzlpylpxfs.supabase.co/storage/v1/object/public/document-uploads/msedge_UswX8ntQGv-1760802798719.png" 
+      src="https://i.postimg.cc/7Y5PGSfy/msedge-Usw-X8nt-QGv.png" 
       alt="BinkoO Store Produits"
       className="rounded-xl w-full h-full object-contain"
     />,
