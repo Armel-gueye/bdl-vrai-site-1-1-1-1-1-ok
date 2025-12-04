@@ -66,7 +66,7 @@ const Realisations: React.FC = () => {
   const bonplatImages = [
     <img 
       key="bonplat-1" 
-      src="https://slelguoygbfzlpylpxfs.supabase.co/storage/v1/render/image/public/document-uploads/msedge_f180yDu80q-min-1762783985121.png" 
+      src="https://i.postimg.cc/T29QLWBz/msedge-f180y-Du80q.png" 
       alt="BONPLAT Pingdwendé - Nos Menus"
       className="rounded-xl w-full h-full object-contain"
     />,
