@@ -587,6 +587,10 @@ export const BinkooChatbot: React.FC = () => {
                 font-size: 12px;
                 padding: 10px 14px;
             }
+
+            #binkoo-chat-input {
+                font-size: 16px;
+            }
         }
       `}} />
 
