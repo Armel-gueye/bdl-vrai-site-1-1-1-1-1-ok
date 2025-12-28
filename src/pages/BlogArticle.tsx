@@ -20,7 +20,7 @@ import {
 export default function BlogArticle() {
   const { id } = useParams();
   const navigate = useNavigate();
-  
+
   // État pour l'article (chargé depuis le service)
   const [article, setArticle] = useState<BlogPost | null>(null);
   const [isLoading, setIsLoading] = useState(true);
@@ -29,7 +29,7 @@ export default function BlogArticle() {
   useEffect(() => {
     const loadArticle = async () => {
       if (!id) return;
-      
+
       try {
         setIsLoading(true);
         const post = await getPostById(Number(id));
@@ -40,7 +40,7 @@ export default function BlogArticle() {
         setIsLoading(false);
       }
     };
-    
+
     loadArticle();
   }, [id]);
 
@@ -84,10 +84,10 @@ export default function BlogArticle() {
 
   const formatDate = (dateString: string) => {
     const date = new Date(dateString);
-    return date.toLocaleDateString('fr-FR', { 
-      day: 'numeric', 
-      month: 'long', 
-      year: 'numeric' 
+    return date.toLocaleDateString('fr-FR', {
+      day: 'numeric',
+      month: 'long',
+      year: 'numeric'
     });
   };
 
@@ -114,7 +114,7 @@ export default function BlogArticle() {
         // User cancelled the share, do nothing
         return;
       }
-      
+
       try {
         await navigator.clipboard.writeText(window.location.href);
         toast.success('Lien copié dans le presse-papiers !');
@@ -134,7 +134,7 @@ export default function BlogArticle() {
           className="w-full h-full object-cover"
         />
         <div className="absolute inset-0 bg-gradient-to-t from-black/70 via-black/30 to-transparent"></div>
-        
+
         {/* Back Button */}
         <motion.button
           onClick={() => navigate('/blog')}
@@ -182,14 +182,13 @@ export default function BlogArticle() {
         <div className="container-fluid">
           <div className="max-w-3xl mx-auto">
             <motion.div
-              className="prose prose-lg md:prose-xl prose-gray max-w-none"
+              className="prose prose-gray prose-p:text-[15px] prose-p:md:text-[17px] max-w-none"
               initial={{ opacity: 0, y: 20 }}
               animate={{ opacity: 1, y: 0 }}
               transition={{ duration: 0.6, delay: 0.3 }}
               dangerouslySetInnerHTML={{ __html: articleContent }}
               style={{
-                lineHeight: '1.8',
-                fontSize: '1.125rem'
+                lineHeight: '1.8'
               }}
             />
 
