@@ -190,7 +190,7 @@ const Realisations: React.FC = () => {
                           </CollapsibleTrigger>
                           <CollapsibleContent className="mt-4">
                             <div className="bg-muted/50 rounded-lg p-4 md:p-5">
-                              <p className="text-base md:text-lg text-muted-foreground leading-relaxed">
+                              <p className="text-[15px] md:text-[17px] text-muted-foreground leading-relaxed">
                                 {project.detailedText}
                               </p>
                             </div>

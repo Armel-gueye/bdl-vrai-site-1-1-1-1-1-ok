@@ -132,8 +132,8 @@ const Services: React.FC = () => {
 
                   {/* Content - Text always after lottie on mobile/tablet, zigzag on desktop */}
                   <div className={`space-y-5 md:space-y-6 ${index % 2 === 1 ?
-                      'order-2 lg:order-1' :
-                      'order-2'}`
+                    'order-2 lg:order-1' :
+                    'order-2'}`
                   }>
                     <div className="flex items-center gap-3 md:gap-4">
                       <div className="w-12 h-12 md:w-14 md:h-14 rounded-xl bg-gradient-to-t from-black via-black to-neutral-700 flex items-center justify-center flex-shrink-0">
@@ -181,7 +181,7 @@ const Services: React.FC = () => {
                     <Collapsible open={openItems.includes(index)} onOpenChange={() => toggleItem(index)} className="pt-4 md:pt-5">
                       <CollapsibleContent className="mb-4">
                         <div className="bg-muted/50 rounded-lg p-5 md:p-6">
-                          <p className="text-base md:text-lg leading-relaxed text-muted-foreground">
+                          <p className="text-[15px] md:text-[17px] leading-relaxed text-muted-foreground">
                             {service.detailedText}
                           </p>
                         </div>
