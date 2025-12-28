@@ -22,63 +22,63 @@ const Realisations: React.FC = () => {
   };
 
   const binkooImages = [
-    <img 
-      key="binkoo-1" 
-      src="https://i.postimg.cc/85dNGbK6/msedge-m-T1m1b-Md-NY.png" 
+    <img
+      key="binkoo-1"
+      src="https://i.postimg.cc/85dNGbK6/msedge-m-T1m1b-Md-NY.png"
       alt="BinkoO Store Hero"
       className="rounded-xl w-full h-full object-contain"
     />,
-    <img 
-      key="binkoo-2" 
-      src="https://i.postimg.cc/7Y5PGSfy/msedge-Usw-X8nt-QGv.png" 
+    <img
+      key="binkoo-2"
+      src="https://i.postimg.cc/7Y5PGSfy/msedge-Usw-X8nt-QGv.png"
       alt="BinkoO Store Produits"
       className="rounded-xl w-full h-full object-contain"
     />,
-    <img 
-      key="binkoo-3" 
-      src="https://i.postimg.cc/WzQBJFHk/msedge-Uw-TP6v-E3Sk.png" 
+    <img
+      key="binkoo-3"
+      src="https://i.postimg.cc/WzQBJFHk/msedge-Uw-TP6v-E3Sk.png"
       alt="BinkoO Store Contact"
       className="rounded-xl w-full h-full object-contain"
     />
   ];
 
   const lindaImages = [
-    <img 
-      key="linda-1" 
-      src="https://i.postimg.cc/NjpwdM9h/msedge-a-Uw-BZ6u5Oh.png" 
+    <img
+      key="linda-1"
+      src="https://i.postimg.cc/NjpwdM9h/msedge-a-Uw-BZ6u5Oh.png"
       alt="Linda Maïssar - Mes Livres"
       className="rounded-xl w-full h-full object-contain"
     />,
-    <img 
-      key="linda-2" 
-      src="https://i.postimg.cc/59kk0ChT/msedge-o-Yx9ORu-STc.png" 
+    <img
+      key="linda-2"
+      src="https://i.postimg.cc/59kk0ChT/msedge-o-Yx9ORu-STc.png"
       alt="Linda Maïssar - Mes Services"
       className="rounded-xl w-full h-full object-contain"
     />,
-    <img 
-      key="linda-3" 
-      src="https://i.postimg.cc/Qtc4n44W/msedge-v-Vh7V5FME2.png" 
+    <img
+      key="linda-3"
+      src="https://i.postimg.cc/Qtc4n44W/msedge-v-Vh7V5FME2.png"
       alt="Linda Maïssar - Accueil"
       className="rounded-xl w-full h-full object-contain"
     />
   ];
 
   const bonplatImages = [
-    <img 
-      key="bonplat-1" 
-      src="https://i.postimg.cc/T29QLWBz/msedge-f180y-Du80q.png" 
+    <img
+      key="bonplat-1"
+      src="https://i.postimg.cc/T29QLWBz/msedge-f180y-Du80q.png"
       alt="BONPLAT Pingdwendé - Nos Menus"
       className="rounded-xl w-full h-full object-contain"
     />,
-    <img 
-      key="bonplat-2" 
-      src="https://i.postimg.cc/FFfVTn6k/msedge-Gf5hg-DL269.jpg" 
+    <img
+      key="bonplat-2"
+      src="https://i.postimg.cc/FFfVTn6k/msedge-Gf5hg-DL269.jpg"
       alt="BONPLAT Pingdwendé - Accueil"
       className="rounded-xl w-full h-full object-contain"
     />,
-    <img 
-      key="bonplat-3" 
-      src="https://i.postimg.cc/6qmvVwrs/msedge-W99r-Jqy-LXt.png" 
+    <img
+      key="bonplat-3"
+      src="https://i.postimg.cc/6qmvVwrs/msedge-W99r-Jqy-LXt.png"
       alt="BONPLAT Pingdwendé - Service Traiteur"
       className="rounded-xl w-full h-full object-contain"
     />
@@ -114,138 +114,138 @@ const Realisations: React.FC = () => {
 
   return (
     <>
-      <SEO 
+      <SEO
         title="Nos Réalisations - BinkoO Digital Lab"
         description="Découvrez nos projets web : sites e-commerce, portfolios d'auteur, solutions IA. Réalisations concrètes pour le marché burkinabè. Design moderne et performances optimales."
         canonical="https://binkoodigitallab.com/realisations"
         keywords="réalisations BinkoO, portfolio projets, sites web Burkina Faso, projets e-commerce, BinkoO Store, Linda Maïssar, BONPLAT"
       />
       <div className="py-16 md:py-20 lg:py-28 px-4 sm:px-6 lg:px-8">
-      <div className="max-w-7xl mx-auto">
-        {/* Header */}
-        <AnimatedSection animation="fade-up">
-        <motion.div 
-          className="text-center mb-8 md:mb-10 lg:mb-12"
-          initial={{ opacity: 0, y: 20 }}
-          animate={{ opacity: 1, y: 0 }}
-          transition={{ duration: 0.6 }}
-        >
-          <h1 className="text-4xl md:text-5xl lg:text-6xl font-bold mb-5 md:mb-6">
-            Nos Réalisations
-          </h1>
-          <AnimatedParagraph delay={0.2}>
-          <p className="text-base md:text-lg text-muted-foreground max-w-4xl mx-auto leading-relaxed px-4">
-            Chaque projet est une preuve de notre engagement à offrir des solutions performantes, esthétiques et adaptées au marché local.
-          </p>
-          </AnimatedParagraph>
-        </motion.div>
-        </AnimatedSection>
-
-        {/* Projects Grid */}
-        <div className="grid grid-cols-1 lg:grid-cols-2 gap-6 md:gap-8 mb-16 md:mb-20">
-          {projects.map((project, index) => (
-            <AnimatedSection key={index} animation="fade-up" delay={index * 0.15}>
+        <div className="max-w-7xl mx-auto">
+          {/* Header */}
+          <AnimatedSection animation="fade-up">
             <motion.div
+              className="text-center mb-8 md:mb-10 lg:mb-12"
+              initial={{ opacity: 0, y: 20 }}
+              animate={{ opacity: 1, y: 0 }}
+              transition={{ duration: 0.6 }}
+            >
+              <h1 className="text-4xl md:text-5xl lg:text-6xl font-bold mb-5 md:mb-6">
+                Nos Réalisations
+              </h1>
+              <AnimatedParagraph delay={0.2}>
+                <p className="text-base md:text-lg text-muted-foreground max-w-4xl mx-auto leading-relaxed px-4">
+                  Chaque projet est une preuve de notre engagement à offrir des solutions performantes, esthétiques et adaptées au marché local.
+                </p>
+              </AnimatedParagraph>
+            </motion.div>
+          </AnimatedSection>
+
+          {/* Projects Grid */}
+          <div className="grid grid-cols-1 lg:grid-cols-2 gap-6 md:gap-8 mb-16 md:mb-20">
+            {projects.map((project, index) => (
+              <AnimatedSection key={index} animation="fade-up" delay={index * 0.15}>
+                <motion.div
+                  initial={{ opacity: 0, y: 30 }}
+                  whileInView={{ opacity: 1, y: 0 }}
+                  viewport={{ once: true }}
+                  transition={{ duration: 0.6, delay: index * 0.2 }}
+                >
+                  <InteractiveCard delay={index * 100}>
+                    <div className="overflow-visible h-full flex flex-col">
+                      {/* Project Folder - Mobile optimized positioning */}
+                      <AnimatedImage delay={0.2}>
+                        <div className="min-h-[300px] sm:min-h-[340px] md:min-h-[400px] lg:min-h-[440px] flex items-center justify-center overflow-visible pt-10 sm:pt-4">
+                          <Folder items={project.folderImages} />
+                        </div>
+                      </AnimatedImage>
+
+                      {/* Project Content */}
+                      <div className="pt-0 px-6 pb-6 md:px-7 md:pb-7 lg:px-8 lg:pb-8 flex-grow flex flex-col">
+                        <span className="inline-block px-3 py-1 bg-primary/10 text-primary rounded-full text-xs md:text-sm font-medium mb-4 md:mb-5 w-fit">
+                          {project.category}
+                        </span>
+
+                        <h3 className="font-bold text-xl md:text-2xl mb-4 md:mb-5">
+                          {project.title}
+                        </h3>
+
+                        <AnimatedParagraph delay={0.3}>
+                          <p className="text-sm md:text-base text-muted-foreground mb-5 md:mb-6 leading-relaxed flex-grow">
+                            {project.description}
+                          </p>
+                        </AnimatedParagraph>
+
+                        {/* Collapsible Detailed Text */}
+                        <Collapsible
+                          open={expandedProject === index}
+                          onOpenChange={() => setExpandedProject(expandedProject === index ? null : index)}
+                          className="mb-5 md:mb-6"
+                        >
+                          <CollapsibleTrigger asChild>
+                            <Button variant="ghost" size="sm">
+                              En savoir plus
+                              <ChevronDown className={`ml-2 h-4 w-4 transition-transform ${expandedProject === index ? 'rotate-180' : ''}`} />
+                            </Button>
+                          </CollapsibleTrigger>
+                          <CollapsibleContent className="mt-4">
+                            <div className="bg-muted/50 rounded-lg p-4 md:p-5">
+                              <p className="text-base md:text-lg text-muted-foreground leading-relaxed">
+                                {project.detailedText}
+                              </p>
+                            </div>
+                          </CollapsibleContent>
+                        </Collapsible>
+
+                        <a
+                          href={project.link}
+                          target="_blank"
+                          rel="noopener noreferrer"
+                          className="mt-auto inline-block w-fit"
+                        >
+                          <button className="inline-flex items-center gap-2 px-4 py-2 bg-primary text-primary-foreground rounded-md hover:bg-primary/90 transition-colors text-sm font-medium whitespace-nowrap">
+                            <span>Voir le site</span>
+                            <ArrowRight className="h-4 w-4 flex-shrink-0" />
+                          </button>
+                        </a>
+                      </div>
+                    </div>
+                  </InteractiveCard>
+                </motion.div>
+              </AnimatedSection>
+            ))}
+          </div>
+
+          {/* Call to Action */}
+          <AnimatedSection animation="fade-up">
+            <motion.div
+              className="mt-16 md:mt-20 text-center bg-gradient-to-br from-surface to-accent p-8 md:p-10 lg:p-12 rounded-xl"
               initial={{ opacity: 0, y: 30 }}
               whileInView={{ opacity: 1, y: 0 }}
               viewport={{ once: true }}
-              transition={{ duration: 0.6, delay: index * 0.2 }}
+              transition={{ duration: 0.6 }}
             >
-              <InteractiveCard delay={index * 100}>
-                <div className="overflow-visible h-full flex flex-col">
-                  {/* Project Folder - Mobile optimized positioning */}
-                  <AnimatedImage delay={0.2}>
-                  <div className="min-h-[300px] sm:min-h-[340px] md:min-h-[400px] lg:min-h-[440px] flex items-center justify-center overflow-visible pt-10 sm:pt-4">
-                    <Folder items={project.folderImages} />
-                  </div>
-                  </AnimatedImage>
-
-                  {/* Project Content */}
-                  <div className="pt-0 px-6 pb-6 md:px-7 md:pb-7 lg:px-8 lg:pb-8 flex-grow flex flex-col">
-                    <span className="inline-block px-3 py-1 bg-primary/10 text-primary rounded-full text-xs md:text-sm font-medium mb-4 md:mb-5 w-fit">
-                      {project.category}
-                    </span>
-                    
-                    <h3 className="font-bold text-xl md:text-2xl mb-4 md:mb-5">
-                      {project.title}
-                    </h3>
-                    
-                    <AnimatedParagraph delay={0.3}>
-                    <p className="text-sm md:text-base text-muted-foreground mb-5 md:mb-6 leading-relaxed flex-grow">
-                      {project.description}
-                    </p>
-                    </AnimatedParagraph>
-
-                    {/* Collapsible Detailed Text */}
-                    <Collapsible 
-                      open={expandedProject === index} 
-                      onOpenChange={() => setExpandedProject(expandedProject === index ? null : index)}
-                      className="mb-5 md:mb-6"
-                    >
-                      <CollapsibleTrigger asChild>
-                        <Button variant="ghost" size="sm">
-                          En savoir plus
-                          <ChevronDown className={`ml-2 h-4 w-4 transition-transform ${expandedProject === index ? 'rotate-180' : ''}`} />
-                        </Button>
-                      </CollapsibleTrigger>
-                      <CollapsibleContent className="mt-4">
-                        <div className="bg-muted/50 rounded-lg p-4 md:p-5">
-                          <p className="text-xs md:text-sm text-muted-foreground leading-relaxed">
-                            {project.detailedText}
-                          </p>
-                        </div>
-                      </CollapsibleContent>
-                    </Collapsible>
-
-                    <a
-                      href={project.link}
-                      target="_blank"
-                      rel="noopener noreferrer"
-                      className="mt-auto inline-block w-fit"
-                    >
-                      <button className="inline-flex items-center gap-2 px-4 py-2 bg-primary text-primary-foreground rounded-md hover:bg-primary/90 transition-colors text-sm font-medium whitespace-nowrap">
-                        <span>Voir le site</span>
-                        <ArrowRight className="h-4 w-4 flex-shrink-0" />
-                      </button>
-                    </a>
-                  </div>
-                </div>
-              </InteractiveCard>
+              <h2 className="text-3xl md:text-4xl lg:text-5xl font-bold mb-5 md:mb-6">
+                Et si le prochain projet, c'était le vôtre ?
+              </h2>
+              <AnimatedParagraph delay={0.2}>
+                <p className="text-base md:text-lg text-muted-foreground mb-8 md:mb-10 max-w-2xl mx-auto leading-relaxed">
+                  Vous avez une idée ? Nous avons les outils pour la concrétiser.
+                </p>
+              </AnimatedParagraph>
+              <a
+                href="#"
+                onClick={handleWhatsAppClick}
+              >
+                <Button size="lg">
+                  Démarrer votre Projet
+                  <ArrowRight className="ml-2 h-5 w-5" />
+                </Button>
+              </a>
             </motion.div>
-            </AnimatedSection>
-          ))}
+          </AnimatedSection>
         </div>
-
-        {/* Call to Action */}
-        <AnimatedSection animation="fade-up">
-        <motion.div 
-          className="mt-16 md:mt-20 text-center bg-gradient-to-br from-surface to-accent p-8 md:p-10 lg:p-12 rounded-xl"
-          initial={{ opacity: 0, y: 30 }}
-          whileInView={{ opacity: 1, y: 0 }}
-          viewport={{ once: true }}
-          transition={{ duration: 0.6 }}
-        >
-          <h2 className="text-3xl md:text-4xl lg:text-5xl font-bold mb-5 md:mb-6">
-            Et si le prochain projet, c'était le vôtre ?
-          </h2>
-          <AnimatedParagraph delay={0.2}>
-          <p className="text-base md:text-lg text-muted-foreground mb-8 md:mb-10 max-w-2xl mx-auto leading-relaxed">
-            Vous avez une idée ? Nous avons les outils pour la concrétiser.
-          </p>
-          </AnimatedParagraph>
-          <a
-            href="#"
-            onClick={handleWhatsAppClick}
-          >
-            <Button size="lg">
-              Démarrer votre Projet
-              <ArrowRight className="ml-2 h-5 w-5" />
-            </Button>
-          </a>
-        </motion.div>
-        </AnimatedSection>
       </div>
-    </div>
     </>
   );
 };
