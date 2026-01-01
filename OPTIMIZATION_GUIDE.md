@@ -195,5 +195,5 @@ npm install -D rollup-plugin-visualizer
 
 ---
 
-**Dernière mise à jour :** Janvier 2025
+**Dernière mise à jour :** Janvier 2026
 **Version du projet :** 1.0.0 (Optimisé)

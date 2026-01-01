@@ -18,13 +18,22 @@
  */
 export interface BlogPost {
   id: number;
-  title: { rendered: string } | string;
-  excerpt: { rendered: string } | string;
-  content: { rendered: string } | string;
+  title: {
+    rendered: string;
+  };
+  excerpt: {
+    rendered: string;
+  };
+  content: {
+    rendered: string;
+  };
   date: string;
-  month?: string;
+  month: string;
   readTime?: string;
-  image?: string;
+  image: string;
+  slug?: string;
+  author?: number;
+  featured_media?: number;
   _embedded?: {
     'wp:featuredmedia'?: [{ source_url: string }];
   };
@@ -64,9 +73,9 @@ export const extractText = (field: { rendered: string } | string | undefined): s
  * Récupère l'image featured depuis WordPress ou utilise fallback
  */
 export const getFeaturedImage = (article: BlogPost): string => {
-  return article._embedded?.['wp:featuredmedia']?.[0]?.source_url 
-         || article.image 
-         || '/images/fallback.jpg';
+  return article._embedded?.['wp:featuredmedia']?.[0]?.source_url
+    || article.image
+    || '/images/fallback.jpg';
 };
 
 /**
@@ -93,14 +102,18 @@ export const getMonthFromDate = (dateString: string): string => {
 const mockArticles: BlogPost[] = [
   {
     id: 1,
-    title: { rendered: "Comment l'IA transforme le marketing digital en 2025" },
+    title: { rendered: "Comment l'IA transforme le marketing digital en 2026" },
     excerpt: { rendered: "Découvrez comment l'intelligence artificielle révolutionne les stratégies marketing et booste les conversions des entreprises modernes." },
     image: "https://images.unsplash.com/photo-1677442136019-21780ecad995?w=800&h=600&fit=crop",
-    date: "2025-01-15",
-    month: "Janvier 2025",
+    date: "2026-01-15",
+    month: "Janvier 2026",
     readTime: "5 min",
-    content: { rendered: `
-      <p>L'intelligence artificielle n'est plus une technologie du futur – elle est au cœur du marketing digital moderne. En 2025, les entreprises qui intègrent l'IA dans leurs stratégies marketing voient leurs conversions augmenter de 40% en moyenne.</p>
+    slug: "ia-marketing-digital-2026",
+    author: 1,
+    featured_media: 0,
+    content: {
+      rendered: `
+      <p>L'intelligence artificielle n'est plus une technologie du futur – elle est au cœur du marketing digital moderne. En 2026, les entreprises qui intègrent l'IA dans leurs stratégies marketing voient leurs conversions augmenter de 40% en moyenne.</p>
 
       <h2>L'IA au service de la personnalisation</h2>
       <p>La personnalisation à grande échelle est devenue une réalité grâce à l'IA. Les algorithmes d'apprentissage automatique analysent le comportement des utilisateurs en temps réel pour adapter le contenu, les offres et l'expérience utilisateur de manière dynamique.</p>
@@ -118,13 +131,17 @@ const mockArticles: BlogPost[] = [
   {
     id: 2,
     title: { rendered: "5 tendances web design à adopter cette année" },
-    excerpt: { rendered: "Les tendances qui domineront le design web en 2025 : minimalisme, animations fluides, et expériences immersives." },
+    excerpt: { rendered: "Les tendances qui domineront le design web en 2026 : minimalisme, animations fluides, et expériences immersives." },
     image: "https://images.unsplash.com/photo-1561070791-2526d30994b5?w=800&h=600&fit=crop",
-    date: "2025-01-10",
-    month: "Janvier 2025",
+    date: "2026-01-10",
+    month: "Janvier 2026",
     readTime: "4 min",
-    content: { rendered: `
-      <p>Le design web évolue constamment, et 2025 apporte son lot d'innovations visuelles et fonctionnelles. Voici les 5 tendances incontournables pour rester à la pointe.</p>
+    slug: "tendances-design-web-2026",
+    author: 1,
+    featured_media: 0,
+    content: {
+      rendered: `
+      <p>Le design web évolue constamment, et 2026 apporte son lot d'innovations visuelles et fonctionnelles. Voici les 5 tendances incontournables pour rester à la pointe.</p>
 
       <h2>1. Minimalisme maximal</h2>
       <p>Le "less is more" atteint son apogée. Des espaces blancs généreux, une typographie forte et des éléments visuels épurés créent des interfaces élégantes et performantes.</p>
@@ -147,10 +164,11 @@ const mockArticles: BlogPost[] = [
     title: { rendered: "Automatisation : gagnez 10h par semaine" },
     excerpt: { rendered: "Comment automatiser vos tâches répétitives et libérer du temps pour ce qui compte vraiment dans votre business." },
     image: "https://images.unsplash.com/photo-1485827404703-89b55fcc595e?w=800&h=600&fit=crop",
-    date: "2025-01-05",
-    month: "Janvier 2025",
+    date: "2026-01-05",
+    month: "Janvier 2026",
     readTime: "6 min",
-    content: { rendered: `<p>L'automatisation n'est pas une option, c'est une nécessité. Les entrepreneurs qui automatisent leurs processus gagnent en moyenne 10 heures par semaine – du temps précieux pour se concentrer sur la croissance.</p>
+    content: {
+      rendered: `<p>L'automatisation n'est pas une option, c'est une nécessité. Les entrepreneurs qui automatisent leurs processus gagnent en moyenne 10 heures par semaine – du temps précieux pour se concentrer sur la croissance.</p>
 
       <h2>Identifier les tâches automatisables</h2>
       <p>Commencez par lister toutes vos tâches répétitives : envoi d'emails, mise à jour de bases de données, génération de rapports, publication sur les réseaux sociaux. Ce sont vos candidats prioritaires.</p>
@@ -172,7 +190,8 @@ const mockArticles: BlogPost[] = [
     date: "2024-12-28",
     month: "Décembre 2024",
     readTime: "7 min",
-    content: { rendered: `<p>Une landing page efficace peut transformer votre taux de conversion. Voici la formule éprouvée pour créer des pages qui convertissent à plus de 15%.</p>
+    content: {
+      rendered: `<p>Une landing page efficace peut transformer votre taux de conversion. Voici la formule éprouvée pour créer des pages qui convertissent à plus de 15%.</p>
 
       <h2>La structure gagnante</h2>
       <p>Hero percutant, problème/solution, preuve sociale, bénéfices concrets, CTA visible et fort. Cette structure a fait ses preuves sur des milliers de pages.</p>
@@ -194,7 +213,8 @@ const mockArticles: BlogPost[] = [
     date: "2024-12-20",
     month: "Décembre 2024",
     readTime: "5 min",
-    content: { rendered: `<p>Le service client 24/7 n'est plus un luxe réservé aux grandes entreprises. Les chatbots IA le rendent accessible et abordable pour tous.</p>
+    content: {
+      rendered: `<p>Le service client 24/7 n'est plus un luxe réservé aux grandes entreprises. Les chatbots IA le rendent accessible et abordable pour tous.</p>
 
       <h2>Au-delà du simple FAQ</h2>
       <p>Les chatbots modernes comprennent le contexte, gèrent plusieurs langues et s'améliorent avec chaque conversation. Ils ne remplacent pas l'humain, ils le libèrent des tâches répétitives.</p>
@@ -207,13 +227,14 @@ const mockArticles: BlogPost[] = [
   },
   {
     id: 6,
-    title: { rendered: "SEO en 2025 : ce qui a vraiment changé" },
+    title: { rendered: "SEO en 2026 : ce qui a vraiment changé" },
     excerpt: { rendered: "Les nouvelles règles du référencement naturel avec l'arrivée de l'IA dans les moteurs de recherche." },
     image: "https://images.unsplash.com/photo-1432888622747-4eb9a8f2c293?w=800&h=600&fit=crop",
     date: "2024-12-15",
     month: "Décembre 2024",
     readTime: "8 min",
-    content: { rendered: `<p>L'intégration de l'IA dans Google Search bouleverse les règles du SEO. Voici ce qui change et comment adapter votre stratégie.</p>
+    content: {
+      rendered: `<p>L'intégration de l'IA dans Google Search bouleverse les règles du SEO. Voici ce qui change et comment adapter votre stratégie.</p>
 
       <h2>L'intention prime sur les mots-clés</h2>
       <p>Google comprend désormais l'intention derrière chaque recherche. Optimisez pour répondre aux questions, pas juste pour placer des mots-clés.</p>
@@ -235,7 +256,8 @@ const mockArticles: BlogPost[] = [
     date: "2024-12-05",
     month: "Décembre 2024",
     readTime: "6 min",
-    content: { rendered: `<p>Dans un monde saturé d'informations, seules les marques mémorables survivent. Voici comment créer une identité digitale qui marque les esprits.</p>
+    content: {
+      rendered: `<p>Dans un monde saturé d'informations, seules les marques mémorables survivent. Voici comment créer une identité digitale qui marque les esprits.</p>
 
       <h2>Cohérence visuelle totale</h2>
       <p>Couleurs, typographie, style visuel : tout doit être cohérent sur tous les canaux. La répétition crée la reconnaissance.</p>
@@ -257,7 +279,8 @@ const mockArticles: BlogPost[] = [
     date: "2024-11-25",
     month: "Novembre 2024",
     readTime: "5 min",
-    content: { rendered: `<p>1 seconde de délai = 7% de conversions en moins. La performance web n'est pas un luxe technique, c'est un impératif business.</p>
+    content: {
+      rendered: `<p>1 seconde de délai = 7% de conversions en moins. La performance web n'est pas un luxe technique, c'est un impératif business.</p>
 
       <h2>Les chiffres qui parlent</h2>
       <p>53% des utilisateurs abandonnent un site qui met plus de 3 secondes à charger. Chaque milliseconde compte littéralement.</p>
@@ -279,7 +302,8 @@ const mockArticles: BlogPost[] = [
     date: "2024-11-18",
     month: "Novembre 2024",
     readTime: "7 min",
-    content: { rendered: `<p>Le copywriting est l'art de vendre avec des mots. Maîtrisez ces techniques et transformez vos textes en machines à conversion.</p>
+    content: {
+      rendered: `<p>Le copywriting est l'art de vendre avec des mots. Maîtrisez ces techniques et transformez vos textes en machines à conversion.</p>
 
       <h2>La formule AIDA</h2>
       <p>Attention, Intérêt, Désir, Action : cette structure vieille de 100 ans fonctionne toujours. Captez l'attention, créez le désir, poussez à l'action.</p>
@@ -295,13 +319,17 @@ const mockArticles: BlogPost[] = [
   },
   {
     id: 10,
-    title: { rendered: "Réseaux sociaux : stratégie gagnante 2025" },
+    title: { rendered: "Réseaux sociaux : stratégie gagnante 2026" },
     excerpt: { rendered: "Comment créer du contenu engageant et développer une communauté fidèle autour de votre marque." },
     image: "https://images.unsplash.com/photo-1611162617474-5b21e879e113?w=800&h=600&fit=crop",
-    date: "2024-11-10",
-    month: "Novembre 2024",
+    date: "2026-01-02",
+    month: "Janvier 2026",
     readTime: "6 min",
-    content: { rendered: `<p>Les réseaux sociaux ne sont pas des canaux de pub, ce sont des espaces de conversation. Voici comment y briller en 2025.</p>
+    slug: "strategie-reseaux-sociaux-2026",
+    author: 1,
+    featured_media: 0,
+    content: {
+      rendered: `<p>Les réseaux sociaux ne sont pas des canaux de pub, ce sont des espaces de conversation. Voici comment y briller en 2026.</p>
 
       <h2>Authenticité avant tout</h2>
       <p>Les contenus trop léchés ne fonctionnent plus. Les gens veulent du vrai, de l'humain, de l'imperfection. Montrez les coulisses.</p>
@@ -323,7 +351,8 @@ const mockArticles: BlogPost[] = [
     date: "2024-11-02",
     month: "Novembre 2024",
     readTime: "8 min",
-    content: { rendered: `<p>Votre boutique en ligne a du potentiel, mais les ventes stagnent ? Ces stratégies éprouvées vont débloquer votre croissance.</p>
+    content: {
+      rendered: `<p>Votre boutique en ligne a du potentiel, mais les ventes stagnent ? Ces stratégies éprouvées vont débloquer votre croissance.</p>
 
       <h2>Fiches produits qui vendent</h2>
       <p>Photos professionnelles multiples, descriptions détaillées centrées sur les bénéfices, avis clients visibles. C'est la base.</p>
@@ -365,7 +394,7 @@ const WORDPRESS_API_CONFIG = {
 export const getPosts = async (): Promise<BlogPost[]> => {
   // Simulation d'un délai réseau pour le réalisme
   await new Promise(resolve => setTimeout(resolve, 300));
-  
+
   return mockArticles;
 };
 
@@ -383,7 +412,7 @@ export const getPosts = async (): Promise<BlogPost[]> => {
 export const getPostById = async (id: number): Promise<BlogPost | null> => {
   // Simulation d'un délai réseau
   await new Promise(resolve => setTimeout(resolve, 200));
-  
+
   return mockArticles.find(article => article.id === id) || null;
 };
 

@@ -106,7 +106,7 @@ export function Footer() {
         <div className="border-t border-border/50 pt-8">
           <AnimatedContainer delay={0.5}>
             <p className="text-muted-foreground text-center text-sm">
-              © {new Date().getFullYear()} BinkoO Digital Lab. Tous droits réservés.
+              © 2026 BinkoO Digital Lab. Tous droits réservés.
             </p>
           </AnimatedContainer>
         </div>
