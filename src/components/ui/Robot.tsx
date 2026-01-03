@@ -5,7 +5,7 @@ import { getDeviceCapabilities } from '@/utils/deviceCapabilities'
 const Spline = lazy(() => import('@splinetool/react-spline'))
 
 // Static fallback image for low-end devices
-const ROBOT_FALLBACK_IMAGE = 'https://i.postimg.cc/bJyzr724/Capture-d-ecran-2026-01-03-114717.webp';
+const ROBOT_FALLBACK_IMAGE = 'https://i.postimg.cc/c4SvwL8B/Capture-d-ecran-2026-01-03-134631-min.webp';
 
 export default function Robot() {
   const [isLoaded, setIsLoaded] = useState(false);
@@ -82,7 +82,7 @@ export default function Robot() {
         <img
           src={ROBOT_FALLBACK_IMAGE}
           alt="Robot BinkoO Digital Lab"
-          className="w-full h-full object-contain opacity-100"
+          className="w-full h-full object-cover object-center opacity-100"
           loading="lazy"
           decoding="async"
         />

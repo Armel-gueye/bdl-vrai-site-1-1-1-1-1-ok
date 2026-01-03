@@ -76,7 +76,7 @@ export function detectDeviceCapabilities(): DeviceCapabilities {
     }
     // Modern iOS devices (iPhone 12+) are generally capable
     // But we'll only trust iOS if it has enough cores
-    else if (isIOS && cores >= 6) {
+    else if (isIOS && cores >= 4) {
         isHighEnd = true;
         reason = `iOS device: ${cores} cores`;
     }
