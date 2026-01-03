@@ -4,65 +4,24 @@ import { getDeviceCapabilities } from '@/utils/deviceCapabilities'
 
 const Spline = lazy(() => import('@splinetool/react-spline'))
 
-// Static fallback image for low-end devices
+// Static fallback image for low-end mobile devices
 const ROBOT_FALLBACK_IMAGE = 'https://i.postimg.cc/c4SvwL8B/Capture-d-ecran-2026-01-03-134631-min.webp';
 
 export default function Robot() {
   const [isLoaded, setIsLoaded] = useState(false);
   const [canRender3D, setCanRender3D] = useState<boolean | null>(null);
-  const [isVisible, setIsVisible] = useState(true);
   const containerRef = useRef<HTMLDivElement>(null);
-  const splineAppRef = useRef<Application | null>(null);
 
-  // Check device capabilities on mount
+  // Check device capabilities on mount - ONCE only
   useEffect(() => {
     const capabilities = getDeviceCapabilities();
     setCanRender3D(capabilities.canHandle3D);
-
-    // Log for debugging (can be removed in production)
-    if (process.env.NODE_ENV === 'development') {
-      console.log('[Robot] Device capabilities:', capabilities);
-    }
   }, []);
 
-  // IntersectionObserver to pause 3D when off-screen (performance optimization)
-  useEffect(() => {
-    if (!containerRef.current || !canRender3D) return;
-
-    const observer = new IntersectionObserver(
-      (entries) => {
-        entries.forEach((entry) => {
-          setIsVisible(entry.isIntersecting);
-        });
-      },
-      { threshold: 0.1, rootMargin: '100px' }
-    );
-
-    observer.observe(containerRef.current);
-    return () => observer.disconnect();
-  }, [canRender3D]);
-
-  // Pause/resume Spline based on visibility
-  useEffect(() => {
-    if (!splineAppRef.current) return;
-
-    if (isVisible) {
-      splineAppRef.current.play();
-    } else {
-      splineAppRef.current.stop();
-    }
-  }, [isVisible]);
-
+  // Handle Spline load - animation plays ONCE on load, that's it
   const onLoad = (splineApp: Application) => {
-    splineAppRef.current = splineApp;
-
     // Ensure the robot appears at its final size without zoom animation
     splineApp.setZoom(1);
-
-    // If not visible on load, pause immediately
-    if (!isVisible) {
-      splineApp.stop();
-    }
 
     // Delay the fade-in by 0.5s after complete loading
     setTimeout(() => {
@@ -75,7 +34,7 @@ export default function Robot() {
     return <div ref={containerRef} className="w-full h-full bg-transparent"></div>;
   }
 
-  // Low-end device: Show static image fallback
+  // Low-end mobile device: Show static image fallback
   if (!canRender3D) {
     return (
       <div ref={containerRef} className="w-full h-full relative">
@@ -90,13 +49,13 @@ export default function Robot() {
     );
   }
 
-  // High-end device: Show 3D Spline
+  // Capable device (Desktop or high-end mobile): Show 3D Spline
+  // Animation plays ONCE on page load - no restart on scroll
   return (
     <div ref={containerRef} className="w-full h-full">
       <Suspense
         fallback={
           <div className="w-full h-full flex items-center justify-center bg-transparent">
-            {/* Clean, simple loading state - no visible loader */}
             <div className="w-full h-full bg-transparent"></div>
           </div>
         }

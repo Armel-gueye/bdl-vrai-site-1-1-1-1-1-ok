@@ -50,12 +50,12 @@ export function detectDeviceCapabilities(): DeviceCapabilities {
     // Low-end: 2-3GB, Mid-range: 4-6GB, High-end: 8GB+
     const memory = (navigator as any).deviceMemory || 2; // Default to low if unknown
 
-    // Check if mobile device (touch + small screen = likely mobile)
-    const isMobile =
-        typeof window !== 'undefined' && (
-            'ontouchstart' in window ||
-            navigator.maxTouchPoints > 0 ||
-            window.innerWidth < 1024
+    // Check if ACTUALLY a mobile device (use user agent, not just touch/screen size)
+    // Touchscreen laptops and small browser windows should NOT be classified as mobile
+    const isMobileOS =
+        typeof navigator !== 'undefined' && (
+            /Android/i.test(navigator.userAgent) ||
+            /iPhone|iPad|iPod/i.test(navigator.userAgent)
         );
 
     // Check for iOS (often well-optimized but we'll be conservative on older models)
@@ -70,7 +70,7 @@ export function detectDeviceCapabilities(): DeviceCapabilities {
     let reason = '';
 
     // DESKTOP = ALWAYS 3D (no detection, user has other plans for desktop)
-    if (!isMobile) {
+    if (!isMobileOS) {
         isHighEnd = true;
         reason = `Desktop device - always capable`;
     }
