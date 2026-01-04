@@ -1,4 +1,4 @@
-import React, { useState, useEffect, useRef } from 'react';
+import React, { useState, useEffect, useRef, useCallback } from 'react';
 import { gsap } from 'gsap';
 import './BubbleMenu.css';
 
@@ -39,11 +39,17 @@ export const BubbleMenu: React.FC<BubbleMenuProps> = ({
   const [isOpen, setIsOpen] = useState(false);
   const [showOverlay, setShowOverlay] = useState(false);
 
-  const overlayRef = useRef<HTMLDivElement>(null);
   const menuItemsRef = useRef<HTMLDivElement>(null);
   const backdropRef = useRef<HTMLDivElement>(null);
   const pillLinksRef = useRef<(HTMLAnchorElement | null)[]>([]);
   const labelRefs = useRef<(HTMLSpanElement | null)[]>([]);
+  const animationRef = useRef<gsap.core.Timeline[]>([]);
+
+  // Reset refs when items change
+  useEffect(() => {
+    pillLinksRef.current = [];
+    labelRefs.current = [];
+  }, [items]);
 
   // Lock body scroll when menu is open
   useEffect(() => {
@@ -60,36 +66,55 @@ export const BubbleMenu: React.FC<BubbleMenuProps> = ({
     };
   }, [isOpen]);
 
-  // Animation effect - aligned with reference code
+  // Cleanup function for animations
+  const killAllAnimations = useCallback(() => {
+    animationRef.current.forEach(tl => tl.kill());
+    animationRef.current = [];
+
+    const bubbles = pillLinksRef.current.filter(Boolean);
+    const labels = labelRefs.current.filter(Boolean);
+    const backdrop = backdropRef.current;
+
+    if (bubbles.length) gsap.killTweensOf(bubbles);
+    if (labels.length) gsap.killTweensOf(labels);
+    if (backdrop) gsap.killTweensOf(backdrop);
+  }, []);
+
+  // Animation effect
   useEffect(() => {
     const overlay = menuItemsRef.current;
     const backdrop = backdropRef.current;
     const bubbles = pillLinksRef.current.filter(Boolean);
     const labels = labelRefs.current.filter(Boolean);
 
-    if (!overlay || !backdrop || !bubbles.length) return;
+    if (!overlay || !backdrop) return;
 
-    if (isOpen) {
-      // Show overlay first
-      gsap.set(overlay, { display: 'flex' });
+    if (isOpen && showOverlay) {
+      // Kill any existing animations first
+      killAllAnimations();
 
-      // Kill any existing tweens to prevent conflicts
-      gsap.killTweensOf([...bubbles, ...labels, backdrop]);
+      // Ensure we have elements to animate
+      if (!bubbles.length) return;
 
-      // Reset initial state
-      gsap.set(bubbles, { scale: 0, transformOrigin: '50% 50%' });
-      gsap.set(labels, { y: 24, autoAlpha: 0 });
+      // Show overlay container
+      gsap.set(overlay, { display: 'flex', visibility: 'visible' });
+
+      // Reset initial state for all elements
+      gsap.set(bubbles, { scale: 0, opacity: 1, transformOrigin: '50% 50%' });
+      gsap.set(labels, { y: 24, opacity: 0 });
 
       // Animate backdrop
       gsap.to(backdrop, {
-        autoAlpha: 1,
+        opacity: 1,
+        visibility: 'visible',
         duration: 0.3
       });
 
-      // Animate bubbles with stagger
+      // Animate bubbles with stagger (no randomness to avoid timing issues)
       bubbles.forEach((bubble, i) => {
-        const delay = i * staggerDelay + gsap.utils.random(-0.05, 0.05);
+        const delay = i * staggerDelay;
         const tl = gsap.timeline({ delay });
+        animationRef.current.push(tl);
 
         tl.to(bubble, {
           scale: 1,
@@ -102,7 +127,7 @@ export const BubbleMenu: React.FC<BubbleMenuProps> = ({
             labels[i],
             {
               y: 0,
-              autoAlpha: 1,
+              opacity: 1,
               duration: animationDuration,
               ease: 'power3.out'
             },
@@ -110,36 +135,52 @@ export const BubbleMenu: React.FC<BubbleMenuProps> = ({
           );
         }
       });
-    } else if (showOverlay) {
-      // Kill any existing tweens
-      gsap.killTweensOf([...bubbles, ...labels, backdrop]);
+    } else if (!isOpen && showOverlay) {
+      // Closing animation
+      killAllAnimations();
 
       // Hide backdrop
       gsap.to(backdrop, {
-        autoAlpha: 0,
-        duration: 0.2
+        opacity: 0,
+        duration: 0.2,
+        onComplete: () => {
+          gsap.set(backdrop, { visibility: 'hidden' });
+        }
       });
 
       // Hide labels first
-      gsap.to(labels, {
-        y: 24,
-        autoAlpha: 0,
-        duration: 0.2,
-        ease: 'power3.in'
-      });
+      if (labels.length) {
+        gsap.to(labels, {
+          y: 24,
+          opacity: 0,
+          duration: 0.15,
+          ease: 'power3.in'
+        });
+      }
 
-      // Hide bubbles and then hide overlay
-      gsap.to(bubbles, {
-        scale: 0,
-        duration: 0.2,
-        ease: 'power3.in',
-        onComplete: () => {
-          gsap.set(overlay, { display: 'none' });
-          setShowOverlay(false);
-        }
-      });
+      // Hide bubbles then overlay
+      if (bubbles.length) {
+        gsap.to(bubbles, {
+          scale: 0,
+          duration: 0.15,
+          ease: 'power3.in',
+          onComplete: () => {
+            gsap.set(overlay, { display: 'none', visibility: 'hidden' });
+            setShowOverlay(false);
+          }
+        });
+      } else {
+        // If no bubbles, just hide overlay directly
+        gsap.set(overlay, { display: 'none', visibility: 'hidden' });
+        setShowOverlay(false);
+      }
     }
-  }, [isOpen, showOverlay, animationDuration, animationEase, staggerDelay]);
+
+    // Cleanup on unmount
+    return () => {
+      killAllAnimations();
+    };
+  }, [isOpen, showOverlay, animationDuration, animationEase, staggerDelay, killAllAnimations]);
 
   // Handle resize for rotation on desktop
   useEffect(() => {
@@ -165,6 +206,9 @@ export const BubbleMenu: React.FC<BubbleMenuProps> = ({
   const toggleMenu = () => {
     const nextState = !isOpen;
     if (nextState) {
+      // Reset refs before opening
+      pillLinksRef.current = [];
+      labelRefs.current = [];
       setShowOverlay(true);
     }
     setIsOpen(nextState);
@@ -186,48 +230,36 @@ export const BubbleMenu: React.FC<BubbleMenuProps> = ({
           opacity: 0,
           visibility: 'hidden',
           pointerEvents: isOpen ? 'auto' : 'none',
-          zIndex: 40,
-          top: 0,
-          left: 0,
-          right: 0,
-          bottom: 0,
-          width: '100%',
-          height: '100dvh',
-          minHeight: '100dvh',
-          position: 'fixed',
-          overflow: 'hidden'
+          zIndex: 40
         }}
         onClick={() => setIsOpen(false)}
       />
 
-      <div className={`bubble-menu ${positionClass}`}>
+      <nav className={`bubble-menu ${positionClass}`} aria-label="Main navigation">
         <div
-          className="bubble logo-bubble !w-auto !h-full"
+          className="bubble logo-bubble"
           style={{ background: menuBg, color: menuContentColor }}>
-          <div className="logo-content">{logo}</div>
+          <span className="logo-content">{logo}</span>
         </div>
 
-        <div
-          className="bubble toggle-bubble"
+        <button
+          type="button"
+          className={`bubble toggle-bubble menu-btn ${isOpen ? 'open' : ''}`}
+          onClick={toggleMenu}
+          aria-label={menuAriaLabel}
+          aria-pressed={isOpen}
           style={{ background: menuBg }}>
-          <button
-            className={`menu-btn ${isOpen ? 'open' : ''}`}
-            onClick={toggleMenu}
-            aria-label={menuAriaLabel}
-            aria-pressed={isOpen}
-            style={{ background: menuBg }}>
-            <span className="menu-line" style={{ background: menuContentColor }}></span>
-            <span className="menu-line" style={{ background: menuContentColor }}></span>
-          </button>
-        </div>
-      </div>
+          <span className="menu-line" style={{ background: menuContentColor }}></span>
+          <span className="menu-line short" style={{ background: menuContentColor }}></span>
+        </button>
+      </nav>
 
-      {/* Menu items - only render when showOverlay is true */}
+      {/* Menu items - only in DOM when showOverlay is true */}
       {showOverlay && (
         <div
           ref={menuItemsRef}
           className={`bubble-menu-items ${positionClass}`}
-          style={{ display: 'none', pointerEvents: isOpen ? 'auto' : 'none' }}
+          style={{ display: 'none', visibility: 'hidden', pointerEvents: isOpen ? 'auto' : 'none' }}
           aria-hidden={!isOpen}>
           <ul className="pill-list" role="menu" aria-label="Menu links">
             {items.map((item, index) => {
@@ -235,12 +267,14 @@ export const BubbleMenu: React.FC<BubbleMenuProps> = ({
               const needsSpacer = !isEven && index === Math.floor(items.length / 2);
 
               return (
-                <React.Fragment key={index}>
-                  {needsSpacer && <li className="pill-spacer" />}
+                <React.Fragment key={`${item.label}-${index}`}>
+                  {needsSpacer && <li className="pill-spacer" role="none" />}
                   <li className="pill-col" role="none">
                     <a
                       role="menuitem"
-                      ref={(el) => { pillLinksRef.current[index] = el; }}
+                      ref={(el) => {
+                        if (el) pillLinksRef.current[index] = el;
+                      }}
                       href={item.href}
                       className="pill-link"
                       aria-label={item.ariaLabel}
@@ -256,7 +290,9 @@ export const BubbleMenu: React.FC<BubbleMenuProps> = ({
                       onClick={handleLinkClick}>
                       <span
                         className="pill-label"
-                        ref={(el) => { labelRefs.current[index] = el; }}>
+                        ref={(el) => {
+                          if (el) labelRefs.current[index] = el;
+                        }}>
                         {item.label}
                       </span>
                     </a>
