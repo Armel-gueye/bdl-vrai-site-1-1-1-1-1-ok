@@ -1,4 +1,5 @@
 import React, { useState, useEffect, useRef, useCallback } from 'react';
+import { useLocation } from 'react-router-dom';
 import { gsap } from 'gsap';
 import './BubbleMenu.css';
 
@@ -38,12 +39,66 @@ export const BubbleMenu: React.FC<BubbleMenuProps> = ({
 }) => {
   const [isOpen, setIsOpen] = useState(false);
   const [showOverlay, setShowOverlay] = useState(false);
+  const location = useLocation();
 
   const menuItemsRef = useRef<HTMLDivElement>(null);
   const backdropRef = useRef<HTMLDivElement>(null);
   const pillLinksRef = useRef<(HTMLAnchorElement | null)[]>([]);
   const labelRefs = useRef<(HTMLSpanElement | null)[]>([]);
   const animationRef = useRef<gsap.core.Timeline[]>([]);
+
+  // Clear all GSAP inline styles
+  const clearAllStyles = useCallback(() => {
+    const bubbles = pillLinksRef.current.filter(Boolean);
+    const labels = labelRefs.current.filter(Boolean);
+    const backdrop = backdropRef.current;
+    const overlay = menuItemsRef.current;
+
+    // Clear GSAP inline styles completely
+    if (bubbles.length) {
+      gsap.set(bubbles, { clearProps: 'all' });
+    }
+    if (labels.length) {
+      gsap.set(labels, { clearProps: 'all' });
+    }
+    if (backdrop) {
+      gsap.set(backdrop, { clearProps: 'opacity,visibility' });
+    }
+    if (overlay) {
+      gsap.set(overlay, { clearProps: 'all' });
+    }
+  }, []);
+
+  // Cleanup function for animations
+  const killAllAnimations = useCallback(() => {
+    animationRef.current.forEach(tl => tl.kill());
+    animationRef.current = [];
+
+    const bubbles = pillLinksRef.current.filter(Boolean);
+    const labels = labelRefs.current.filter(Boolean);
+    const backdrop = backdropRef.current;
+
+    if (bubbles.length) gsap.killTweensOf(bubbles);
+    if (labels.length) gsap.killTweensOf(labels);
+    if (backdrop) gsap.killTweensOf(backdrop);
+  }, []);
+
+  // Close menu and reset on route change
+  useEffect(() => {
+    // Close menu immediately on navigation
+    setIsOpen(false);
+
+    // Kill animations and clear styles
+    killAllAnimations();
+    clearAllStyles();
+
+    // Reset overlay state
+    setShowOverlay(false);
+
+    // Reset refs
+    pillLinksRef.current = [];
+    labelRefs.current = [];
+  }, [location.pathname, killAllAnimations, clearAllStyles]);
 
   // Reset refs when items change
   useEffect(() => {
@@ -65,20 +120,6 @@ export const BubbleMenu: React.FC<BubbleMenuProps> = ({
       document.body.style.height = '';
     };
   }, [isOpen]);
-
-  // Cleanup function for animations
-  const killAllAnimations = useCallback(() => {
-    animationRef.current.forEach(tl => tl.kill());
-    animationRef.current = [];
-
-    const bubbles = pillLinksRef.current.filter(Boolean);
-    const labels = labelRefs.current.filter(Boolean);
-    const backdrop = backdropRef.current;
-
-    if (bubbles.length) gsap.killTweensOf(bubbles);
-    if (labels.length) gsap.killTweensOf(labels);
-    if (backdrop) gsap.killTweensOf(backdrop);
-  }, []);
 
   // Animation effect
   useEffect(() => {
@@ -110,7 +151,7 @@ export const BubbleMenu: React.FC<BubbleMenuProps> = ({
         duration: 0.3
       });
 
-      // Animate bubbles with stagger (no randomness to avoid timing issues)
+      // Animate bubbles with stagger
       bubbles.forEach((bubble, i) => {
         const delay = i * staggerDelay;
         const tl = gsap.timeline({ delay });
@@ -158,7 +199,7 @@ export const BubbleMenu: React.FC<BubbleMenuProps> = ({
         });
       }
 
-      // Hide bubbles then overlay
+      // Hide bubbles then overlay, then clear all styles
       if (bubbles.length) {
         gsap.to(bubbles, {
           scale: 0,
@@ -166,12 +207,14 @@ export const BubbleMenu: React.FC<BubbleMenuProps> = ({
           ease: 'power3.in',
           onComplete: () => {
             gsap.set(overlay, { display: 'none', visibility: 'hidden' });
+            // Clear all GSAP inline styles after animation completes
+            clearAllStyles();
             setShowOverlay(false);
           }
         });
       } else {
-        // If no bubbles, just hide overlay directly
         gsap.set(overlay, { display: 'none', visibility: 'hidden' });
+        clearAllStyles();
         setShowOverlay(false);
       }
     }
@@ -179,8 +222,9 @@ export const BubbleMenu: React.FC<BubbleMenuProps> = ({
     // Cleanup on unmount
     return () => {
       killAllAnimations();
+      clearAllStyles();
     };
-  }, [isOpen, showOverlay, animationDuration, animationEase, staggerDelay, killAllAnimations]);
+  }, [isOpen, showOverlay, animationDuration, animationEase, staggerDelay, killAllAnimations, clearAllStyles]);
 
   // Handle resize for rotation on desktop
   useEffect(() => {
