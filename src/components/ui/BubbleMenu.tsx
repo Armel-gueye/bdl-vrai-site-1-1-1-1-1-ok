@@ -56,10 +56,8 @@ export const BubbleMenu: React.FC<BubbleMenuProps> = ({
   // Lock body scroll
   useEffect(() => {
     document.body.style.overflow = isOpen ? 'hidden' : '';
-    document.body.style.height = isOpen ? '100vh' : '';
     return () => {
       document.body.style.overflow = '';
-      document.body.style.height = '';
     };
   }, [isOpen]);
 
