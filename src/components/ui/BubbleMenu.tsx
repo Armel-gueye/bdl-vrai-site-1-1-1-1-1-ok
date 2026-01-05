@@ -288,16 +288,20 @@ export const BubbleMenu: React.FC<BubbleMenuProps> = ({
           <span className="logo-content">{logo}</span>
         </div>
 
-        <button
-          type="button"
-          className={`bubble toggle-bubble menu-btn ${isOpen ? 'open' : ''}`}
-          onClick={toggleMenu}
-          aria-label={menuAriaLabel}
-          aria-pressed={isOpen}
+        <div
+          className="bubble toggle-bubble"
           style={{ background: menuBg }}>
-          <span className="menu-line" style={{ background: menuContentColor }}></span>
-          <span className="menu-line short" style={{ background: menuContentColor }}></span>
-        </button>
+          <button
+            type="button"
+            className={`menu-btn ${isOpen ? 'open' : ''}`}
+            onClick={toggleMenu}
+            aria-label={menuAriaLabel}
+            aria-pressed={isOpen}
+            style={{ background: menuBg }}>
+            <span className="menu-line" style={{ background: menuContentColor }}></span>
+            <span className="menu-line" style={{ background: menuContentColor }}></span>
+          </button>
+        </div>
       </nav>
 
       {/* Menu items - only in DOM when showOverlay is true */}
