@@ -53,13 +53,13 @@ export const BubbleMenu: React.FC<BubbleMenuProps> = ({
     labelRefs.current = [];
   }, [items]);
 
-  // Lock body scroll
-  useEffect(() => {
-    document.body.style.overflow = isOpen ? 'hidden' : '';
-    return () => {
-      document.body.style.overflow = '';
-    };
-  }, [isOpen]);
+  // Scroll lock removed to prevent layout thrashing on iOS with heavy Framer Motion pages
+  // useEffect(() => {
+  //   document.body.style.overflow = isOpen ? 'hidden' : '';
+  //   return () => {
+  //     document.body.style.overflow = '';
+  //   };
+  // }, [isOpen]);
 
   // Handle animation frame for opening/closing
   useEffect(() => {
