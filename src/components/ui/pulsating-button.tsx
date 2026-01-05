@@ -19,7 +19,7 @@ export function PulsatingButton({
     return (
         <button
             className={cn(
-                "relative inline-flex items-center justify-center px-8 py-4 text-base font-medium text-white bg-red-600 rounded-xl cursor-pointer",
+                "relative inline-flex items-center justify-center px-8 py-4 text-base font-medium text-white bg-red-600 rounded-full cursor-pointer",
                 "hover:bg-red-700 transition-colors duration-300",
                 "focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring",
                 className
@@ -33,7 +33,7 @@ export function PulsatingButton({
             {...props}
         >
             <div className="relative z-10">{children}</div>
-            <div className="absolute inset-0 rounded-xl animate-pulse-ring" />
+            <div className="absolute inset-0 rounded-full animate-pulse-ring" />
         </button>
     );
 }
