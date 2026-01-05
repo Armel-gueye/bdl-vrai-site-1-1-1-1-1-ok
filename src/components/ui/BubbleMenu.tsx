@@ -207,7 +207,7 @@ export const BubbleMenu: React.FC<BubbleMenuProps> = ({
       {/* Backdrop overlay - Restored */}
       <div
         ref={backdropRef}
-        className="fixed inset-0 bg-slate-50/80 backdrop-blur-sm"
+        className="fixed inset-0 bg-slate-50/95"
         style={{
           opacity: 0,
           visibility: 'hidden',
