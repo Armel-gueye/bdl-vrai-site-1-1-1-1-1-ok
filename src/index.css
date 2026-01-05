@@ -320,6 +320,26 @@
   animation: scaleIn 0.6s ease-out forwards;
 }
 
+/* Pulsating Button Animation */
+@keyframes pulse-ring {
+  0% {
+    box-shadow: 0 0 0 0 var(--pulse-color, #dc2626);
+    opacity: 0.7;
+  }
+  70% {
+    box-shadow: 0 0 0 12px var(--pulse-color, #dc2626);
+    opacity: 0;
+  }
+  100% {
+    box-shadow: 0 0 0 0 var(--pulse-color, #dc2626);
+    opacity: 0;
+  }
+}
+
+.animate-pulse-ring {
+  animation: pulse-ring var(--duration, 1.5s) cubic-bezier(0.4, 0, 0.6, 1) infinite;
+}
+
 /* Smooth scroll behavior */
 /* Smooth scroll behavior */
 /* html selector is already handled above in the body block consolidation */

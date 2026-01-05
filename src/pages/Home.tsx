@@ -1,6 +1,6 @@
 import { Link } from 'react-router-dom';
 import { Sparkles, Palette, Globe, ArrowRight, Check } from 'lucide-react';
-import { ParticleButton } from '@/components/ui/particle-button';
+import { PulsatingButton } from '@/components/ui/pulsating-button';
 import { GetStartedButton } from '@/components/ui/get-started-button';
 import { InteractiveHoverButton } from '@/components/ui/interactive-hover-button';
 import { VelocityScroll } from '@/components/ui/scroll-based-velocity';
@@ -80,17 +80,17 @@ export default function Home() {
             {/* Mobile CTA (visible only on small screens) */}
             <div className="lg:hidden">
               <a href="#" onClick={handleWhatsAppClick}>
-                <ParticleButton className="bg-red-600 text-white hover:bg-red-700">
+                <PulsatingButton>
                   Devis Gratuit
-                </ParticleButton>
+                </PulsatingButton>
               </a>
             </div>
             {/* Desktop CTA (visible only on large screens) - Moved here below the text */}
             <div className="hidden lg:block">
               <a href="#" onClick={handleWhatsAppClick}>
-                <ParticleButton className="bg-red-600 text-white hover:bg-red-700">
+                <PulsatingButton>
                   Devis Gratuit
-                </ParticleButton>
+                </PulsatingButton>
               </a>
             </div>
           </motion.div>
