@@ -33,7 +33,10 @@ export function PulsatingButton({
             {...props}
         >
             <div className="relative z-10">{children}</div>
-            <div className="absolute inset-0 rounded-full animate-pulse-ring" />
+            <div
+                className="absolute inset-0 rounded-full animate-pulse-ring"
+                style={{ backgroundColor: pulseColor, zIndex: -1 }}
+            />
         </button>
     );
 }
