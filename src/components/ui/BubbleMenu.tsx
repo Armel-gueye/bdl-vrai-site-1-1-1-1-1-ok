@@ -37,7 +37,7 @@ export const BubbleMenu: React.FC<BubbleMenuProps> = ({
   staggerDelay = 0.12
 }) => {
   const [isOpen, setIsOpen] = useState(false);
-  const [showOverlay, setShowOverlay] = useState(false);
+  // Removed showOverlay state to eliminate mounting delay
 
   // Используем gsap.context pour la gestion propre des animations
   const menuContainerRef = useRef<HTMLDivElement>(null);
@@ -53,27 +53,16 @@ export const BubbleMenu: React.FC<BubbleMenuProps> = ({
     labelRefs.current = [];
   }, [items]);
 
-  // Scroll lock removed to prevent layout thrashing on iOS with heavy Framer Motion pages
-  // useEffect(() => {
-  //   document.body.style.overflow = isOpen ? 'hidden' : '';
-  //   return () => {
-  //     document.body.style.overflow = '';
-  //   };
-  // }, [isOpen]);
-
   // Handle animation frame for opening/closing
   useEffect(() => {
-    // If not open and not showing overlay, nothing to do
-    if (!isOpen && !showOverlay) return;
-
-    // Use gsap.context for scoping and easy cleanup
+    // ALWAYS instantiate gsap.context so animations work
     ctx.current = gsap.context(() => {
       const backdrop = backdropRef.current;
       const overlay = overlayRef.current;
       const bubbles = pillLinksRef.current.filter(Boolean);
       const labels = labelRefs.current.filter(Boolean);
 
-      if (isOpen && showOverlay) {
+      if (isOpen) {
         // OPENING ANIMATION
         if (overlay) {
           gsap.set(overlay, { display: 'flex', visibility: 'visible' });
@@ -123,15 +112,10 @@ export const BubbleMenu: React.FC<BubbleMenuProps> = ({
           });
         }
 
-      } else if (!isOpen && showOverlay) {
+      } else {
         // CLOSING ANIMATION
         const bubbles = pillLinksRef.current.filter(Boolean);
         const labels = labelRefs.current.filter(Boolean);
-
-        if (overlay) {
-          // Wait for animations to finish then hide
-          // We use a timeline or separate tweens, but we need to coordinate the 'onComplete'
-        }
 
         // Hide Backdrop
         if (backdrop) {
@@ -164,13 +148,11 @@ export const BubbleMenu: React.FC<BubbleMenuProps> = ({
               if (overlay) {
                 gsap.set(overlay, { display: 'none', visibility: 'hidden' });
               }
-              setShowOverlay(false); // Unmount content
             }
           });
         } else {
           // If no bubbles/labels found (rare error case), just close immediately
           if (overlay) gsap.set(overlay, { display: 'none', visibility: 'hidden' });
-          setShowOverlay(false);
         }
       }
     }, menuContainerRef); // Scope to container
@@ -178,22 +160,11 @@ export const BubbleMenu: React.FC<BubbleMenuProps> = ({
     return () => {
       ctx.current?.revert(); // Cleanup GSAP animations on effect cleanup
     };
-  }, [isOpen, showOverlay, animationDuration, animationEase, staggerDelay, items]);
+  }, [isOpen, animationDuration, animationEase, staggerDelay, items]);
 
 
   const toggleMenu = () => {
-    if (!isOpen) {
-      // Opening
-      setShowOverlay(true);
-      // We set isOpen next tick to ensure render happened? 
-      // Usually setState is batched. 
-      // Simple state toggle fits the user's original logic best.
-      setIsOpen(true);
-    } else {
-      // Closing
-      setIsOpen(false);
-      // We do NOT set showOverlay(false) here, we wait for animation to finish in useEffect
-    }
+    setIsOpen(!isOpen);
   };
 
   const handleLinkClick = () => {
@@ -204,7 +175,7 @@ export const BubbleMenu: React.FC<BubbleMenuProps> = ({
 
   return (
     <div ref={menuContainerRef}>
-      {/* Backdrop overlay - Restored */}
+      {/* Backdrop overlay */}
       <div
         ref={backdropRef}
         className="fixed inset-0 bg-slate-50/95"
@@ -240,55 +211,53 @@ export const BubbleMenu: React.FC<BubbleMenuProps> = ({
         </div>
       </nav>
 
-      {/* Menu items */}
-      {showOverlay && (
-        <div
-          ref={overlayRef}
-          className={`bubble-menu-items ${positionClass}`}
-          style={{ display: 'none', visibility: 'hidden', pointerEvents: isOpen ? 'auto' : 'none' }}
-          aria-hidden={!isOpen}>
-          <ul className="pill-list" role="menu" aria-label="Menu links">
-            {items.map((item, index) => {
-              const isEven = items.length % 2 === 0;
-              const needsSpacer = !isEven && index === Math.floor(items.length / 2);
+      {/* Menu items - ALWAYS RENDERED but HIDDEN (display:none handled by GSAP) */}
+      <div
+        ref={overlayRef}
+        className={`bubble-menu-items ${positionClass}`}
+        style={{ display: 'none', visibility: 'hidden', pointerEvents: isOpen ? 'auto' : 'none' }}
+        aria-hidden={!isOpen}>
+        <ul className="pill-list" role="menu" aria-label="Menu links">
+          {items.map((item, index) => {
+            const isEven = items.length % 2 === 0;
+            const needsSpacer = !isEven && index === Math.floor(items.length / 2);
 
-              return (
-                <React.Fragment key={`${item.label}-${index}`}>
-                  {needsSpacer && <li className="pill-spacer" role="none" />}
-                  <li className="pill-col" role="none">
-                    <a
-                      role="menuitem"
+            return (
+              <React.Fragment key={`${item.label}-${index}`}>
+                {needsSpacer && <li className="pill-spacer" role="none" />}
+                <li className="pill-col" role="none">
+                  <a
+                    role="menuitem"
+                    ref={(el) => {
+                      if (el) pillLinksRef.current[index] = el;
+                    }}
+                    href={item.href}
+                    className="pill-link"
+                    aria-label={item.ariaLabel}
+                    style={
+                      {
+                        '--item-rot': `${item.rotation}deg`,
+                        '--pill-bg': menuBg,
+                        '--pill-color': menuContentColor,
+                        '--hover-bg': item.hoverStyles.bgColor,
+                        '--hover-color': item.hoverStyles.textColor
+                      } as React.CSSProperties
+                    }
+                    onClick={handleLinkClick}>
+                    <span
+                      className="pill-label"
                       ref={(el) => {
-                        if (el) pillLinksRef.current[index] = el;
-                      }}
-                      href={item.href}
-                      className="pill-link"
-                      aria-label={item.ariaLabel}
-                      style={
-                        {
-                          '--item-rot': `${item.rotation}deg`,
-                          '--pill-bg': menuBg,
-                          '--pill-color': menuContentColor,
-                          '--hover-bg': item.hoverStyles.bgColor,
-                          '--hover-color': item.hoverStyles.textColor
-                        } as React.CSSProperties
-                      }
-                      onClick={handleLinkClick}>
-                      <span
-                        className="pill-label"
-                        ref={(el) => {
-                          if (el) labelRefs.current[index] = el;
-                        }}>
-                        {item.label}
-                      </span>
-                    </a>
-                  </li>
-                </React.Fragment>
-              );
-            })}
-          </ul>
-        </div>
-      )}
+                        if (el) labelRefs.current[index] = el;
+                      }}>
+                      {item.label}
+                    </span>
+                  </a>
+                </li>
+              </React.Fragment>
+            );
+          })}
+        </ul>
+      </div>
     </div>
   );
 };
