@@ -39,108 +39,163 @@ export const BubbleMenu: React.FC<BubbleMenuProps> = ({
   const [isOpen, setIsOpen] = useState(false);
   const [showOverlay, setShowOverlay] = useState(false);
 
-  const menuItemsRef = useRef<HTMLDivElement>(null);
+  // Используем gsap.context pour la gestion propre des animations
+  const menuContainerRef = useRef<HTMLDivElement>(null);
+  const backdropRef = useRef<HTMLDivElement>(null);
+  const overlayRef = useRef<HTMLDivElement>(null); // Ref for the menu items container
   const pillLinksRef = useRef<(HTMLAnchorElement | null)[]>([]);
   const labelRefs = useRef<(HTMLSpanElement | null)[]>([]);
+  const ctx = useRef<gsap.Context | null>(null);
 
-  // Lock body scroll when menu is open
+  // Refs cleanup on unmount or items change
   useEffect(() => {
-    if (isOpen) {
-      document.body.style.overflow = 'hidden';
-      document.body.style.height = '100vh';
-    } else {
-      document.body.style.overflow = '';
-      document.body.style.height = '';
-    }
+    pillLinksRef.current = [];
+    labelRefs.current = [];
+  }, [items]);
+
+  // Lock body scroll
+  useEffect(() => {
+    document.body.style.overflow = isOpen ? 'hidden' : '';
+    document.body.style.height = isOpen ? '100vh' : '';
     return () => {
       document.body.style.overflow = '';
       document.body.style.height = '';
     };
   }, [isOpen]);
 
-  // Animation effect
+  // Handle animation frame for opening/closing
   useEffect(() => {
-    const overlay = menuItemsRef.current;
+    // If not open and not showing overlay, nothing to do
+    if (!isOpen && !showOverlay) return;
 
-    if (!overlay) return;
-
-    if (isOpen && showOverlay) {
+    // Use gsap.context for scoping and easy cleanup
+    ctx.current = gsap.context(() => {
+      const backdrop = backdropRef.current;
+      const overlay = overlayRef.current;
       const bubbles = pillLinksRef.current.filter(Boolean);
       const labels = labelRefs.current.filter(Boolean);
 
-      if (!bubbles.length) return;
+      if (isOpen && showOverlay) {
+        // OPENING ANIMATION
+        if (overlay) {
+          gsap.set(overlay, { display: 'flex', visibility: 'visible' });
+        }
 
-      // Show overlay container
-      gsap.set(overlay, { display: 'flex', visibility: 'visible' });
+        if (bubbles.length > 0) {
+          gsap.set(bubbles, { scale: 0, opacity: 1, rotation: 0 }); // Ensure rotation reset if needed or handled by CSS
+          gsap.set(labels, { y: 24, opacity: 0 });
 
-      // Reset initial state
-      gsap.set(bubbles, { scale: 0, opacity: 1, transformOrigin: '50% 50%' });
-      gsap.set(labels, { y: 24, opacity: 0 });
-
-      // Animate bubbles with stagger
-      bubbles.forEach((bubble, i) => {
-        const delay = i * staggerDelay;
-        gsap.to(bubble, {
-          scale: 1,
-          duration: animationDuration,
-          ease: animationEase,
-          delay
-        });
-
-        if (labels[i]) {
-          gsap.to(labels[i], {
-            y: 0,
-            opacity: 1,
-            duration: animationDuration,
-            ease: 'power3.out',
-            delay: delay + animationDuration * 0.1
+          // Re-apply rotation for desktop if needed
+          const isDesktop = window.innerWidth >= 900;
+          bubbles.forEach((bubble, i) => {
+            if (isDesktop && items[i]) {
+              gsap.set(bubble, { rotation: items[i].rotation });
+            }
           });
         }
-      });
-    } else if (!isOpen && showOverlay) {
-      const bubbles = pillLinksRef.current.filter(Boolean);
-      const labels = labelRefs.current.filter(Boolean);
 
-      // Hide labels
-      if (labels.length) {
-        gsap.to(labels, {
-          y: 24,
-          opacity: 0,
-          duration: 0.15,
-          ease: 'power3.in'
-        });
-      }
+        if (backdrop) {
+          gsap.to(backdrop, {
+            opacity: 1,
+            visibility: 'visible',
+            duration: 0.3,
+            ease: 'power2.out'
+          });
+        }
 
-      // Hide bubbles then overlay
-      if (bubbles.length) {
-        gsap.to(bubbles, {
-          scale: 0,
-          duration: 0.15,
-          ease: 'power3.in',
-          onComplete: () => {
-            gsap.set(overlay, { display: 'none', visibility: 'hidden' });
-            // Clear inline styles
-            bubbles.forEach(b => { if (b) gsap.set(b, { clearProps: 'all' }); });
-            labels.forEach(l => { if (l) gsap.set(l, { clearProps: 'all' }); });
-            setShowOverlay(false);
-          }
-        });
-      } else {
-        gsap.set(overlay, { display: 'none', visibility: 'hidden' });
-        setShowOverlay(false);
+        if (bubbles.length > 0) {
+          bubbles.forEach((bubble, i) => {
+            const delay = i * staggerDelay;
+            gsap.to(bubble, {
+              scale: 1,
+              duration: animationDuration,
+              ease: animationEase,
+              delay: delay
+            });
+
+            if (labels[i]) {
+              gsap.to(labels[i], {
+                y: 0,
+                opacity: 1,
+                duration: animationDuration,
+                ease: 'power3.out',
+                delay: delay + animationDuration * 0.1
+              });
+            }
+          });
+        }
+
+      } else if (!isOpen && showOverlay) {
+        // CLOSING ANIMATION
+        const bubbles = pillLinksRef.current.filter(Boolean);
+        const labels = labelRefs.current.filter(Boolean);
+
+        if (overlay) {
+          // Wait for animations to finish then hide
+          // We use a timeline or separate tweens, but we need to coordinate the 'onComplete'
+        }
+
+        // Hide Backdrop
+        if (backdrop) {
+          gsap.to(backdrop, {
+            opacity: 0,
+            duration: 0.2,
+            onComplete: () => {
+              gsap.set(backdrop, { visibility: 'hidden' });
+            }
+          });
+        }
+
+        // Hide Labels
+        if (labels.length > 0) {
+          gsap.to(labels, {
+            y: 24,
+            opacity: 0,
+            duration: 0.15,
+            ease: 'power3.in',
+          });
+        }
+
+        // Hide Bubbles
+        if (bubbles.length > 0) {
+          gsap.to(bubbles, {
+            scale: 0,
+            duration: 0.15,
+            ease: 'power3.in',
+            onComplete: () => {
+              if (overlay) {
+                gsap.set(overlay, { display: 'none', visibility: 'hidden' });
+              }
+              setShowOverlay(false); // Unmount content
+            }
+          });
+        } else {
+          // If no bubbles/labels found (rare error case), just close immediately
+          if (overlay) gsap.set(overlay, { display: 'none', visibility: 'hidden' });
+          setShowOverlay(false);
+        }
       }
-    }
-  }, [isOpen, showOverlay, animationDuration, animationEase, staggerDelay]);
+    }, menuContainerRef); // Scope to container
+
+    return () => {
+      ctx.current?.revert(); // Cleanup GSAP animations on effect cleanup
+    };
+  }, [isOpen, showOverlay, animationDuration, animationEase, staggerDelay, items]);
+
 
   const toggleMenu = () => {
-    const nextState = !isOpen;
-    if (nextState) {
-      // Reset refs before opening
-      pillLinksRef.current = [];
-      labelRefs.current = [];
+    if (!isOpen) {
+      // Opening
       setShowOverlay(true);
+      // We set isOpen next tick to ensure render happened? 
+      // Usually setState is batched. 
+      // Simple state toggle fits the user's original logic best.
+      setIsOpen(true);
+    } else {
+      // Closing
+      setIsOpen(false);
+      // We do NOT set showOverlay(false) here, we wait for animation to finish in useEffect
     }
-    setIsOpen(nextState);
   };
 
   const handleLinkClick = () => {
@@ -150,7 +205,20 @@ export const BubbleMenu: React.FC<BubbleMenuProps> = ({
   const positionClass = useFixedPosition ? 'fixed' : 'absolute';
 
   return (
-    <>
+    <div ref={menuContainerRef}>
+      {/* Backdrop overlay - Restored */}
+      <div
+        ref={backdropRef}
+        className="fixed inset-0 bg-slate-50/80 backdrop-blur-sm"
+        style={{
+          opacity: 0,
+          visibility: 'hidden',
+          pointerEvents: isOpen ? 'auto' : 'none',
+          zIndex: 40
+        }}
+        onClick={() => setIsOpen(false)}
+      />
+
       <nav className={`bubble-menu ${positionClass}`} aria-label="Main navigation">
         <div
           className="bubble logo-bubble"
@@ -177,7 +245,7 @@ export const BubbleMenu: React.FC<BubbleMenuProps> = ({
       {/* Menu items */}
       {showOverlay && (
         <div
-          ref={menuItemsRef}
+          ref={overlayRef}
           className={`bubble-menu-items ${positionClass}`}
           style={{ display: 'none', visibility: 'hidden', pointerEvents: isOpen ? 'auto' : 'none' }}
           aria-hidden={!isOpen}>
@@ -223,7 +291,7 @@ export const BubbleMenu: React.FC<BubbleMenuProps> = ({
           </ul>
         </div>
       )}
-    </>
+    </div>
   );
 };
 
