@@ -45,67 +45,75 @@ export const BubbleMenu: React.FC<BubbleMenuProps> = ({
   useEffect(() => {
     if (isOpen) {
       document.body.style.overflow = 'hidden';
-      document.body.style.height = '100vh';
+      // Retiré: document.body.style.height = '100vh' pour éviter le layout thrashing sur iOS
     } else {
       document.body.style.overflow = '';
-      document.body.style.height = '';
     }
     return () => {
       document.body.style.overflow = '';
-      document.body.style.height = '';
     };
   }, [isOpen]);
 
   useEffect(() => {
     if (!menuItemsRef.current || !backdropRef.current) return;
 
-    if (isOpen) {
-      // Show backdrop
-      gsap.to(backdropRef.current, {
-        autoAlpha: 1,
-        duration: 0.3
-      });
+    // Utilisation de gsap.context pour un nettoyage propre et des performances optimales
+    const ctx = gsap.context(() => {
+      if (isOpen) {
+        // On attend la prochaine frame d'affichage pour éviter de bloquer le thread principal
+        requestAnimationFrame(() => {
+          // Show backdrop
+          gsap.to(backdropRef.current, {
+            autoAlpha: 1,
+            duration: 0.3,
+            force3D: true
+          });
 
-      // Show menu items
-      gsap.to(menuItemsRef.current, {
-        autoAlpha: 1,
-        duration: 0.1
-      });
+          // Show menu items
+          gsap.to(menuItemsRef.current, {
+            autoAlpha: 1,
+            duration: 0.1
+          });
 
-      // Animate pills
-      gsap.fromTo(
-        pillLinksRef.current,
-        {
+          // Animate pills
+          gsap.fromTo(
+            pillLinksRef.current,
+            {
+              autoAlpha: 0,
+              y: 60
+            },
+            {
+              autoAlpha: 1,
+              y: 0,
+              duration: animationDuration,
+              ease: animationEase,
+              stagger: staggerDelay,
+              force3D: true
+            }
+          );
+        });
+      } else {
+        // Hide backdrop
+        gsap.to(backdropRef.current, {
           autoAlpha: 0,
-          y: 60
-        },
-        {
-          autoAlpha: 1,
-          y: 0,
-          duration: animationDuration,
-          ease: animationEase,
-          stagger: staggerDelay
-        }
-      );
-    } else {
-      // Hide backdrop
-      gsap.to(backdropRef.current, {
-        autoAlpha: 0,
-        duration: 0.2
-      });
+          duration: 0.2
+        });
 
-      // Hide pills
-      gsap.to(pillLinksRef.current, {
-        autoAlpha: 0,
-        y: 60,
-        duration: animationDuration * 0.6,
-        ease: 'power2.in',
-        stagger: staggerDelay * 0.5,
-        onComplete: () => {
-          gsap.set(menuItemsRef.current, { autoAlpha: 0 });
-        }
-      });
-    }
+        // Hide pills
+        gsap.to(pillLinksRef.current, {
+          autoAlpha: 0,
+          y: 60,
+          duration: animationDuration * 0.6,
+          ease: 'power2.in',
+          stagger: staggerDelay * 0.5,
+          onComplete: () => {
+            gsap.set(menuItemsRef.current, { autoAlpha: 0 });
+          }
+        });
+      }
+    });
+
+    return () => ctx.revert(); // Nettoyage automatique
   }, [isOpen, animationDuration, animationEase, staggerDelay]);
 
   const toggleMenu = () => {
@@ -133,7 +141,9 @@ export const BubbleMenu: React.FC<BubbleMenuProps> = ({
           height: '100dvh',
           minHeight: '100dvh',
           position: 'fixed',
-          overflow: 'hidden'
+          overflow: 'hidden',
+          transform: 'translateZ(0)', // Force GPU acceleration
+          willChange: 'opacity, visibility'
         }}
         onClick={() => setIsOpen(false)}
       />
