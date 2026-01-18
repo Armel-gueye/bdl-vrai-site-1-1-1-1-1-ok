@@ -6,10 +6,10 @@ interface HeroVideoProps {
   className?: string;
 }
 
-export const HeroVideo: React.FC<HeroVideoProps> = ({ 
-  videoUrl, 
-  posterUrl, 
-  className = "" 
+export const HeroVideo: React.FC<HeroVideoProps> = ({
+  videoUrl,
+  posterUrl,
+  className = ""
 }) => {
   return (
     <div className={`relative w-full h-full overflow-hidden ${className}`}>
@@ -19,8 +19,8 @@ export const HeroVideo: React.FC<HeroVideoProps> = ({
         loop
         playsInline
         poster={posterUrl}
-        className="w-full h-full object-cover"
-        style={{ filter: 'brightness(1.1)' }} // Matching 3D feel
+        className="w-full h-full object-cover scale-[1.35] transform-gpu"
+        style={{ filter: 'brightness(1.05)' }}
         aria-hidden="true"
       >
         <source src={videoUrl} type="video/mp4" />
