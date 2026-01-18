@@ -4,7 +4,8 @@ import { PulsatingButton } from '@/components/ui/pulsating-button';
 import { GetStartedButton } from '@/components/ui/get-started-button';
 import { InteractiveHoverButton } from '@/components/ui/interactive-hover-button';
 import { VelocityScroll } from '@/components/ui/scroll-based-velocity';
-import Robot from '@/components/ui/Robot';
+import { HeroVideo } from '@/components/ui/HeroVideo';
+// import Robot from '@/components/ui/Robot';
 import TiltedCard from '@/components/ui/TiltedCard';
 import { motion } from 'framer-motion';
 import { AnimatedSection, AnimatedParagraph, AnimatedImage } from '@/components/AnimatedSection';
@@ -32,11 +33,14 @@ export default function Home() {
       <section className="relative w-full h-screen overflow-hidden">
         {/* Robot Model - DO NOT TOUCH POSITIONING */}
         <motion.div
-          className="absolute inset-0 flex items-center justify-center opacity-10 lg:inset-auto lg:bottom-0 lg:right-0 lg:w-[45%] lg:right-[10%] lg:h-full lg:opacity-100 lg:items-end lg:justify-end lg:z-20"
+          className="absolute inset-0 flex items-center justify-center opacity-30 md:opacity-20 lg:inset-auto lg:bottom-0 lg:right-0 lg:w-[45%] lg:right-[10%] lg:h-full lg:opacity-100 lg:items-end lg:justify-end lg:z-20"
           initial={{ opacity: 0, x: 50 }}
           animate={{ opacity: 1, x: 0 }}
           transition={{ duration: 1, delay: 0.3, ease: "easeOut" }}>
-          <Robot />
+          <HeroVideo
+            videoUrl="https://drive.google.com/uc?export=download&id=1I_qeJCm33RQrqrL6TdLyCq79pFvyCHCb"
+            posterUrl="https://i.postimg.cc/c4SvwL8B/Capture-d-ecran-2026-01-03-134631-min.webp"
+          />
         </motion.div>
 
         {/* White overlay for mobile and tablet readability only */}
