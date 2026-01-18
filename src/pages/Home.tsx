@@ -38,7 +38,7 @@ export default function Home() {
           animate={{ opacity: 1, x: 0 }}
           transition={{ duration: 1, delay: 0.3, ease: "easeOut" }}>
           <HeroVideo
-            videoUrl="https://drive.google.com/uc?export=download&id=1I_qeJCm33RQrqrL6TdLyCq79pFvyCHCb"
+            videoUrl="/videos/hero-bino.mp4"
             posterUrl="https://i.postimg.cc/c4SvwL8B/Capture-d-ecran-2026-01-03-134631-min.webp"
           />
         </motion.div>
