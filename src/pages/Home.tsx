@@ -4,7 +4,7 @@ import { PulsatingButton } from '@/components/ui/pulsating-button';
 import { GetStartedButton } from '@/components/ui/get-started-button';
 import { InteractiveHoverButton } from '@/components/ui/interactive-hover-button';
 import { VelocityScroll } from '@/components/ui/scroll-based-velocity';
-import { HeroVideo } from '@/components/ui/HeroVideo';
+import { HeroVisual } from '@/components/ui/HeroVisual';
 // import Robot from '@/components/ui/Robot';
 import TiltedCard from '@/components/ui/TiltedCard';
 import { motion } from 'framer-motion';
@@ -31,16 +31,13 @@ export default function Home() {
     <div className="min-h-screen bg-background text-foreground">
       {/* Hero Section */}
       <section className="relative w-full h-screen overflow-hidden bg-white">
-        {/* Robot Model - DO NOT TOUCH POSITIONING */}
+        {/* Hero Visual - Interactive animated orbs */}
         <motion.div
-          className="absolute inset-0 flex items-center justify-center lg:inset-auto lg:bottom-0 lg:right-0 lg:w-1/2 lg:h-full opacity-100 lg:items-end lg:justify-end lg:z-20 bg-white"
+          className="absolute inset-0 flex items-center justify-center lg:inset-auto lg:bottom-0 lg:right-0 lg:w-1/2 lg:h-full lg:items-end lg:justify-end lg:z-20"
           initial={{ opacity: 0, x: 50 }}
           animate={{ opacity: 1, x: 0 }}
           transition={{ duration: 1, delay: 0.3, ease: "easeOut" }}>
-          <HeroVideo
-            videoUrl="/videos/hero-bino.mp4"
-            posterUrl="https://i.postimg.cc/c4SvwL8B/Capture-d-ecran-2026-01-03-134631-min.webp"
-          />
+          <HeroVisual />
         </motion.div>
 
         {/* White overlay for mobile and tablet readability only */}
