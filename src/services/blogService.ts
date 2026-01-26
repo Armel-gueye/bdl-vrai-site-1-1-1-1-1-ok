@@ -1,21 +1,3 @@
-/**
- * Service Blog - Préparé pour WordPress API
- * 
- * Ce service centralise la logique de récupération des articles.
- * Il utilise actuellement des mock data, mais est structuré pour
- * une connexion future à l'API WordPress REST.
- * 
- * API WordPress endpoint attendu : /wp-json/wp/v2/posts?_embed
- */
-
-// ============================================
-// INTERFACES - Structure WordPress API
-// ============================================
-
-/**
- * Interface compatible avec la structure WordPress REST API
- * Supporte à la fois les données WordPress natives et nos données locales
- */
 export interface BlogPost {
   id: number;
   title: {
@@ -39,21 +21,10 @@ export interface BlogPost {
   };
 }
 
-// ============================================
-// HELPERS - Extraction de données
-// ============================================
-
-/**
- * Extrait le texte brut depuis HTML WordPress
- */
 export const stripHtmlTags = (html: string): string => {
   return html.replace(/<[^>]*>/g, '').replace(/&nbsp;/g, ' ').trim();
 };
 
-/**
- * Calcule le temps de lecture depuis le contenu HTML
- * Basé sur 200 mots par minute
- */
 export const calculateReadTime = (htmlContent: string): string => {
   const text = stripHtmlTags(htmlContent);
   const words = text.split(/\s+/).filter(w => w.length > 0).length;
@@ -61,26 +32,17 @@ export const calculateReadTime = (htmlContent: string): string => {
   return `${minutes} min`;
 };
 
-/**
- * Extrait le texte depuis une propriété WordPress (rendered ou string)
- */
 export const extractText = (field: { rendered: string } | string | undefined): string => {
   if (!field) return '';
   return typeof field === 'string' ? field : field.rendered;
 };
 
-/**
- * Récupère l'image featured depuis WordPress ou utilise fallback
- */
 export const getFeaturedImage = (article: BlogPost): string => {
   return article._embedded?.['wp:featuredmedia']?.[0]?.source_url
     || article.image
     || '/images/fallback.jpg';
 };
 
-/**
- * Formate le mois depuis une date ISO WordPress
- */
 export const getMonthFromDate = (dateString: string): string => {
   const date = new Date(dateString);
   return date.toLocaleDateString('fr-FR', { month: 'long', year: 'numeric' })
@@ -89,16 +51,6 @@ export const getMonthFromDate = (dateString: string): string => {
     .join(' ');
 };
 
-// ============================================
-// MOCK DATA - Compatible WordPress
-// ============================================
-
-/**
- * Données mock pour le développement
- * Structure identique à celle retournée par WordPress REST API
- * 
- * TODO: Remplacer par des appels API réels quand WordPress sera configuré
- */
 const mockArticles: BlogPost[] = [
   {
     id: 1,
@@ -116,7 +68,7 @@ const mockArticles: BlogPost[] = [
       <p>L'intelligence artificielle n'est plus une technologie du futur – elle est au cœur du marketing digital moderne. En 2026, les entreprises qui intègrent l'IA dans leurs stratégies marketing voient leurs conversions augmenter de 40% en moyenne.</p>
 
       <h2>L'IA au service de la personnalisation</h2>
-      <p>La personnalisation à grande échelle est devenue une réalité grâce à l'IA. Les algorithmes d'apprentissage automatique analysent le comportement des utilisateurs en temps réel pour adapter le contenu, les offres et l'expérience utilisateur de manière dynamique.</p>
+      <p>La personnalisation à grande échelle est devenue une reality grâce à l'IA. Les algorithmes d'apprentissage automatique analysent le comportement des utilisateurs en temps réel pour adapter le contenu, les offres et l'expérience utilisateur de manière dynamique.</p>
 
       <h2>Les chatbots intelligents changent la donne</h2>
       <p>Les chatbots IA ne se contentent plus de répondre à des questions basiques. Ils comprennent le contexte, détectent les intentions d'achat et guident naturellement vers la conversion – 24h/24, 7j/7.</p>
@@ -368,71 +320,21 @@ const mockArticles: BlogPost[] = [
   }
 ];
 
-// ============================================
-// SERVICE PRINCIPAL
-// ============================================
-
-/**
- * Configuration de l'API WordPress (pour future connexion)
- */
-const WORDPRESS_API_CONFIG = {
-  baseUrl: import.meta.env.VITE_WORDPRESS_URL || 'https://votre-site-wordpress.com',
-  endpoint: '/wp-json/wp/v2/posts',
-  params: '_embed', // Inclut les featured media
-};
-
-/**
- * Récupère tous les articles
- * 
- * @returns Promise<BlogPost[]>
- * 
- * TODO: Implémenter l'appel API WordPress
- * const response = await fetch(`${WORDPRESS_API_CONFIG.baseUrl}${WORDPRESS_API_CONFIG.endpoint}?${WORDPRESS_API_CONFIG.params}`);
- * const data = await response.json();
- * return data as BlogPost[];
- */
 export const getPosts = async (): Promise<BlogPost[]> => {
-  // Simulation d'un délai réseau pour le réalisme
   await new Promise(resolve => setTimeout(resolve, 300));
-
   return mockArticles;
 };
 
-/**
- * Récupère un article par son ID
- * 
- * @param id - ID de l'article
- * @returns Promise<BlogPost | null>
- * 
- * TODO: Implémenter l'appel API WordPress
- * const response = await fetch(`${WORDPRESS_API_CONFIG.baseUrl}${WORDPRESS_API_CONFIG.endpoint}/${id}?${WORDPRESS_API_CONFIG.params}`);
- * const data = await response.json();
- * return data as BlogPost;
- */
 export const getPostById = async (id: number): Promise<BlogPost | null> => {
-  // Simulation d'un délai réseau
   await new Promise(resolve => setTimeout(resolve, 200));
-
   return mockArticles.find(article => article.id === id) || null;
 };
 
-/**
- * Récupère les derniers articles
- * 
- * @param limit - Nombre d'articles à récupérer (défaut: 3)
- * @returns Promise<BlogPost[]>
- */
 export const getLatestPosts = async (limit: number = 3): Promise<BlogPost[]> => {
   const posts = await getPosts();
   return posts.slice(0, limit);
 };
 
-/**
- * Groupe les articles par mois
- * 
- * @param posts - Liste des articles
- * @returns Record<string, BlogPost[]>
- */
 export const groupPostsByMonth = (posts: BlogPost[]): Record<string, BlogPost[]> => {
   return posts.reduce((acc, article) => {
     const month = article.month || getMonthFromDate(article.date);

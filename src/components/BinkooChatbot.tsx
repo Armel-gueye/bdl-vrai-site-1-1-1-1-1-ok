@@ -5,13 +5,13 @@ export const BinkooChatbot: React.FC = () => {
   const location = useLocation();
 
   useEffect(() => {
-    // ... existing useEffect code ...
-    // ========== CONFIGURATION ==========
+
+
     const WEBHOOK_URL = 'https://n8n.srv1090303.hstgr.cloud/webhook/d60df4a0-1428-4d3f-8e76-1ef0fb576c4d/chat';
     let sessionId: string | null = null;
     let isMobileOrTablet = /Android|webOS|iPhone|iPad|iPod|BlackBerry|IEMobile|Opera Mini/i.test(navigator.userAgent);
 
-    // ========== ÉLÉMENTS DOM ==========
+
     const toggle = document.getElementById('binkoo-chat-toggle');
     const chatWindow = document.getElementById('binkoo-chat-window');
     const closeBtn = document.getElementById('binkoo-chat-close');
@@ -21,7 +21,7 @@ export const BinkooChatbot: React.FC = () => {
     const typing = document.querySelector('.chat-typing');
     const welcomeBubbles = document.getElementById('binkoo-welcome-bubbles');
 
-    // ========== GESTION BULLES DE BIENVENUE ==========
+
     // Vérifier si les bulles ont déjà été affichées
     const welcomeShown = localStorage.getItem('binkoo-welcome-shown-v2');
 
@@ -51,7 +51,7 @@ export const BinkooChatbot: React.FC = () => {
       }
     }
 
-    // ========== GESTION SESSION ==========
+
     function getSessionId() {
       if (!sessionId) {
         sessionId = localStorage.getItem('binkoo-session-id');
@@ -63,7 +63,7 @@ export const BinkooChatbot: React.FC = () => {
       return sessionId;
     }
 
-    // ========== FONCTIONS UI ==========
+
     function toggleChat() {
       chatWindow?.classList.toggle('active');
 
@@ -106,7 +106,7 @@ export const BinkooChatbot: React.FC = () => {
       }
     }
 
-    // ========== ENVOI MESSAGE ==========
+
     async function sendMessage() {
       const message = input?.value.trim();
       if (!message) return;
@@ -142,7 +142,6 @@ export const BinkooChatbot: React.FC = () => {
           addMessage("Désolé, je n'ai pas pu traiter votre message. Essayez à nouveau.");
         }
       } catch (error) {
-        console.error('Erreur:', error);
         addMessage("Une erreur s'est produite. Veuillez réessayer.");
       } finally {
         setLoading(false);
@@ -152,7 +151,7 @@ export const BinkooChatbot: React.FC = () => {
       }
     }
 
-    // ========== EVENT LISTENERS ==========
+
     toggle?.addEventListener('click', toggleChat);
     closeBtn?.addEventListener('click', toggleChat);
     sendBtn?.addEventListener('click', sendMessage);

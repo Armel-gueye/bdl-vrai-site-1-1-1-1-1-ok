@@ -45,7 +45,6 @@ export const Contact2 = ({
         toast.error(data.message || "Une erreur est survenue lors de l'envoi. Veuillez réessayer.");
       }
     } catch (error) {
-      console.error("Erreur d'envoi:", error);
       toast.error("Erreur serveur. Veuillez réessayer plus tard ou nous contacter directement par email.");
     } finally {
       setIsSubmitting(false);

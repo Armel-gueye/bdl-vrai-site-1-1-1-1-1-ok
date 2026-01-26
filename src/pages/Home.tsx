@@ -5,8 +5,6 @@ import { GetStartedButton } from '@/components/ui/get-started-button';
 import { InteractiveHoverButton } from '@/components/ui/interactive-hover-button';
 import { VelocityScroll } from '@/components/ui/scroll-based-velocity';
 import { StitchHero as HeroVisual } from '@/components/ui/StitchHero';
-// import { HeroVisual as HeroVisualOriginal } from '@/components/ui/HeroVisual';
-// import Robot from '@/components/ui/Robot';
 import TiltedCard from '@/components/ui/TiltedCard';
 import { motion } from 'framer-motion';
 import { AnimatedSection, AnimatedParagraph, AnimatedImage, StaggerContainer, StaggerItem } from '@/components/AnimatedSection';
@@ -30,34 +28,27 @@ export default function Home() {
       keywords="agence digitale Burkina Faso, automatisation IA, création site web Bobo-Dioulasso, design graphique, chatbot WhatsApp, BinkoO"
     />
     <div className="min-h-screen bg-background text-foreground">
-      {/* Desktop Hero - Google Stitch Version */}
       <div className="hidden lg:block relative w-full h-screen overflow-hidden">
         <HeroVisual />
       </div>
 
-      {/* Mobile/Tablet Hero - Original Version */}
       <section className="lg:hidden relative w-full h-screen overflow-hidden bg-white">
-        {/* Hero Visual - Static Image with Overlay */}
         <div className="absolute inset-0 w-full h-full z-0">
           <img
             src="/assets/mobile-hero.webp"
             alt="Background"
             className="w-full h-full object-cover"
           />
-          {/* Light white backdrop overlay */}
           <div className="absolute inset-0 bg-white/80"></div>
         </div>
 
-        {/* Vertical Text on the Left */}
         <motion.div
           className="absolute left-0 top-1/2 -translate-y-1/2 z-20 flex flex-col items-center gap-2"
           initial={{ opacity: 0, x: -20 }}
           animate={{ opacity: 1, x: 0 }}
           transition={{ duration: 0.8, delay: 0.4, ease: "easeOut" }}>
           <div className="relative flex items-center gap-2">
-            {/* Underline/Vertical line */}
             <div className="w-0.5 h-24 bg-primary/60"></div>
-            {/* Vertical Text */}
             <p
               className="text-[10px] md:text-xs font-bold tracking-wider text-foreground"
               style={{ writingMode: 'vertical-rl', textOrientation: 'mixed' }}>
@@ -66,7 +57,6 @@ export default function Home() {
           </div>
         </motion.div>
 
-        {/* Text content absolutely positioned on the left */}
         <div className="absolute z-10 top-0 left-0 h-full flex items-center pl-12 pr-14 md:pl-20 lg:pr-0 lg:pl-32 pt-32 md:pt-40">
           <motion.div
             className="max-w-2xl text-left"
@@ -83,7 +73,6 @@ export default function Home() {
             <p className="text-sm md:text-base lg:text-lg text-foreground/80 leading-relaxed mb-8 md:mb-10 max-w-xl italic font-medium lg:font-normal">
               Le digital n'est pas l'avenir. C'est le présent. Et il commence avec vous.
             </p>
-            {/* Mobile CTA (visible only on small screens) */}
             <div className="lg:hidden">
               <a href="#" onClick={handleWhatsAppClick}>
                 <button className="group relative flex h-14 min-w-[180px] cursor-pointer items-center justify-center overflow-hidden bg-primary px-8 text-white transition-all hover:bg-red-700 rounded-full shadow-lg shadow-red-500/20 animate-breathing border-none">
@@ -91,7 +80,6 @@ export default function Home() {
                 </button>
               </a>
             </div>
-            {/* Desktop CTA (visible only on large screens) - Moved here below the text */}
             <div className="hidden lg:block">
               <a href="#" onClick={handleWhatsAppClick}>
                 <PulsatingButton>
@@ -102,14 +90,12 @@ export default function Home() {
           </motion.div>
         </div>
 
-        {/* Social Icons - Top Right */}
         <motion.div
           className="absolute right-4 md:right-6 lg:right-4 top-24 md:top-32 z-20 flex flex-col gap-3 md:gap-5"
           initial={{ opacity: 0, x: 20 }}
           animate={{ opacity: 1, x: 0 }}
           transition={{ duration: 0.8, delay: 0.4, ease: "easeOut" }}>
 
-          {/* WhatsApp */}
           <a
             href="https://api.whatsapp.com/send?phone=22644323841"
             target="_blank"
@@ -121,7 +107,6 @@ export default function Home() {
             </svg>
           </a>
 
-          {/* LinkedIn - Properly sized and aligned */}
           <a
             href="https://www.linkedin.com/in/binkoo-digital-lab-5a012b385?utm_source=share&utm_campaign=share_via&utm_content=profile&utm_medium=ios_app"
             target="_blank"
@@ -133,7 +118,6 @@ export default function Home() {
             </svg>
           </a>
 
-          {/* Facebook */}
           <a
             href="https://www.facebook.com/share/1JPaSH1STA/?mibextid=wwXIfr"
             target="_blank"
@@ -145,7 +129,6 @@ export default function Home() {
             </svg>
           </a>
 
-          {/* TikTok */}
           <a
             href="https://www.tiktok.com/@binkoo.digital.lab?_t=ZM-90kNEp9sTGt&_r=1"
             target="_blank"
@@ -157,7 +140,6 @@ export default function Home() {
             </svg>
           </a>
 
-          {/* Instagram */}
           <a
             href="https://www.instagram.com/binkoo_digital_lab?igsh=MXcyYjRpbHBrbjh1ag%3D%3D&utm_source=qr"
             target="_blank"
@@ -172,7 +154,6 @@ export default function Home() {
       </section>
 
 
-      {/* Services Section */}
       <AnimatedSection animation="fade-up">
         <section className="py-16 md:py-20 lg:py-28">
           <div className="container-fluid">
@@ -196,7 +177,6 @@ export default function Home() {
             </motion.div>
 
             <div className="space-y-16 md:space-y-20 lg:space-y-24">
-              {/* Service 1 - IA & Automatisation */}
               <AnimatedSection animation="fade-up" delay={0.1}>
                 <motion.div
                   className="bg-background rounded-2xl p-6 md:p-8 lg:p-10 shadow-lg border border-border"
@@ -206,7 +186,6 @@ export default function Home() {
                   transition={{ duration: 0.6 }}>
 
                   <div className="grid lg:grid-cols-2 gap-8 md:gap-12 lg:gap-16 items-center">
-                    {/* Lottie à gauche sur desktop */}
                     <AnimatedImage delay={0.2}>
                       <div className="order-1">
                         <div className="aspect-[4/3] rounded-2xl overflow-hidden max-w-sm md:max-w-md lg:max-w-full mx-auto w-full h-full">
@@ -218,7 +197,6 @@ export default function Home() {
                         </div>
                       </div>
                     </AnimatedImage>
-                    {/* Texte à droite sur desktop */}
                     <div className="order-2 space-y-5 md:space-y-6">
                       <div className="flex items-center gap-3 md:gap-4">
                         <div className="w-12 h-12 md:w-14 md:h-14 rounded-xl bg-gradient-to-t from-black via-black to-neutral-700 flex items-center justify-center flex-shrink-0">
@@ -251,11 +229,9 @@ export default function Home() {
                 </motion.div>
               </AnimatedSection>
 
-              {/* Service 2 - Création de Sites Web & Applications */}
               <AnimatedSection animation="fade-up" delay={0.2}>
                 <div className="bg-background rounded-2xl p-6 md:p-8 lg:p-10 shadow-lg border border-border">
                   <div className="grid lg:grid-cols-2 gap-8 md:gap-12 lg:gap-16 items-center">
-                    {/* Texte à gauche sur desktop */}
                     <div className="order-2 lg:order-1 space-y-5 md:space-y-6">
                       <div className="flex items-center gap-3 md:gap-4">
                         <div className="w-12 h-12 md:w-14 md:h-14 rounded-xl bg-gradient-to-t from-black via-black to-neutral-700 flex items-center justify-center flex-shrink-0">
@@ -284,7 +260,6 @@ export default function Home() {
                         </Link>
                       </div>
                     </div>
-                    {/* Lottie à droite sur desktop */}
                     <AnimatedImage delay={0.2}>
                       <div className="order-1 lg:order-2">
                         <div className="aspect-[4/3] rounded-2xl overflow-hidden max-w-sm md:max-w-md lg:max-w-full mx-auto w-full h-full">
@@ -300,11 +275,9 @@ export default function Home() {
                 </div>
               </AnimatedSection>
 
-              {/* Service 3 - Création de Visuels */}
               <AnimatedSection animation="fade-up" delay={0.3}>
                 <div className="bg-background rounded-2xl p-6 md:p-8 lg:p-10 shadow-lg border border-border">
                   <div className="grid lg:grid-cols-2 gap-8 md:gap-12 lg:gap-16 items-center">
-                    {/* Lottie à gauche sur desktop */}
                     <AnimatedImage delay={0.2}>
                       <div className="order-1">
                         <div className="aspect-[4/3] rounded-2xl overflow-hidden max-w-sm md:max-w-md lg:max-w-full mx-auto w-full h-full">
@@ -316,7 +289,6 @@ export default function Home() {
                         </div>
                       </div>
                     </AnimatedImage>
-                    {/* Texte à droite sur desktop */}
                     <div className="order-2 space-y-5 md:space-y-6">
                       <div className="flex items-center gap-3 md:gap-4">
                         <div className="w-12 h-12 md:w-14 md:h-14 rounded-xl bg-gradient-to-t from-black via-black to-neutral-700 flex items-center justify-center flex-shrink-0">
@@ -355,7 +327,6 @@ export default function Home() {
 
       <VelocityScroll text="NOUS SOMMES JEUNES MAIS AUDACIEUX" default_velocity={2} className="text-xl md:text-3xl lg:text-4xl font-bold" />
 
-      {/* About Section - Light gray background for logo visibility */}
       <AnimatedSection animation="fade-up">
         <section className="py-16 md:py-20 lg:py-28 bg-gray-50">
           <div className="container-fluid">
@@ -366,7 +337,6 @@ export default function Home() {
               viewport={{ once: true }}
               transition={{ duration: 0.6 }}>
 
-              {/* Left: TiltedCard with Logo */}
               <AnimatedImage delay={0.2}>
                 <div className="flex items-center justify-center">
                   <TiltedCard
@@ -386,7 +356,6 @@ export default function Home() {
                 </div>
               </AnimatedImage>
 
-              {/* Right: Content */}
               <div className="space-y-5 md:space-y-6">
                 <h3 className="text-lg md:text-xl lg:text-2xl uppercase tracking-widest text-primary font-bold">
                   Notre Histoire
@@ -417,7 +386,6 @@ export default function Home() {
         </section>
       </AnimatedSection>
 
-      {/* Portfolio Section */}
       <AnimatedSection animation="fade-up">
         <section className="py-16 md:py-20 lg:py-28">
           <div className="container-fluid">
@@ -439,7 +407,6 @@ export default function Home() {
               </AnimatedParagraph>
             </motion.div>
 
-            {/* Portfolio Grid - Bento Style */}
             <motion.div
               className="grid md:grid-cols-2 lg:grid-cols-3 gap-4 md:gap-5 auto-rows-[180px] mb-10 md:mb-12"
               initial={{ opacity: 0, y: 30 }}
@@ -447,7 +414,6 @@ export default function Home() {
               viewport={{ once: true }}
               transition={{ duration: 0.6 }}>
 
-              {/* Project 1: Large Card */}
               <AnimatedImage delay={0.1}>
                 <div className="relative col-span-full md:col-span-2 lg:col-span-2 row-span-2 rounded-2xl overflow-hidden group border border-border">
                   <img src="https://i.postimg.cc/FFfVTn6k/msedge-Gf5hg-DL269.jpg" alt="Project 1" className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-500" />
@@ -459,7 +425,6 @@ export default function Home() {
                 </div>
               </AnimatedImage>
 
-              {/* Project 2: Top Right */}
               <AnimatedImage delay={0.2}>
                 <div className="relative col-span-full md:col-span-1 lg:col-span-1 row-span-1 rounded-2xl overflow-hidden group border border-border">
                   <img
@@ -475,7 +440,6 @@ export default function Home() {
                 </div>
               </AnimatedImage>
 
-              {/* Project 3: Bottom Right */}
               <AnimatedImage delay={0.3}>
                 <div className="relative col-span-full md:col-span-1 lg:col-span-1 row-span-1 rounded-2xl overflow-hidden group border border-border">
                   <img
@@ -502,7 +466,6 @@ export default function Home() {
         </section>
       </AnimatedSection>
 
-      {/* Why Choose Us Section */}
       <AnimatedSection animation="fade-up">
         <section className="py-16 md:py-20 lg:py-28 bg-gray-50">
           <div className="container-fluid">
@@ -513,7 +476,6 @@ export default function Home() {
               viewport={{ once: true }}
               transition={{ duration: 0.6 }}>
 
-              {/* Left Image */}
               <AnimatedImage delay={0.2}>
                 <div className="aspect-[4/3] bg-gray-50 rounded-2xl border border-border shadow-lg overflow-hidden">
                   <LazyLottieIframe
@@ -523,7 +485,6 @@ export default function Home() {
                 </div>
               </AnimatedImage>
 
-              {/* Right: Features List */}
               <div className="space-y-8 md:space-y-10">
                 <div>
                   <p className="text-sm uppercase tracking-widest text-primary font-semibold mb-3 md:mb-4">
@@ -534,7 +495,6 @@ export default function Home() {
                   </h2>
                 </div>
 
-                {/* Feature 1 */}
                 <AnimatedParagraph delay={0.3}>
                   <div className="flex gap-4 md:gap-5">
                     <div className="flex-shrink-0">
@@ -551,7 +511,6 @@ export default function Home() {
                   </div>
                 </AnimatedParagraph>
 
-                {/* Feature 2 */}
                 <AnimatedParagraph delay={0.4}>
                   <div className="flex gap-4 md:gap-5">
                     <div className="flex-shrink-0">
@@ -568,7 +527,6 @@ export default function Home() {
                   </div>
                 </AnimatedParagraph>
 
-                {/* Feature 3 */}
                 <AnimatedParagraph delay={0.5}>
                   <div className="flex gap-4 md:gap-5">
                     <div className="flex-shrink-0">
@@ -590,7 +548,6 @@ export default function Home() {
         </section>
       </AnimatedSection>
 
-      {/* Contact2 - Juste au-dessus du Footer */}
       <Contact2 />
     </div>
   </>;

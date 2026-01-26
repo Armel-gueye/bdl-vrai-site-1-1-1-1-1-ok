@@ -37,7 +37,6 @@ export default function BlogArticle() {
         const post = await getPostById(Number(id));
         setArticle(post);
       } catch (error) {
-        console.error('Erreur lors du chargement de l\'article:', error);
       } finally {
         setIsLoading(false);
       }

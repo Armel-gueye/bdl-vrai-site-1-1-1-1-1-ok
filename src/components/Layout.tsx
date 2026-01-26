@@ -4,7 +4,6 @@ import { Menu, X, ArrowRight } from 'lucide-react';
 import { Footer } from '@/components/ui/footer-section';
 import { motion, AnimatePresence } from 'framer-motion';
 import { BubbleMenu } from '@/components/ui/BubbleMenu';
-// import { DynamicNavigation } from '@/components/lightswind/dynamic-navigation';
 import { StitchNavbar } from '@/components/ui/StitchNavbar';
 import { BinkooChatbot } from '@/components/BinkooChatbot';
 import { openWhatsApp } from '@/utils/whatsapp';

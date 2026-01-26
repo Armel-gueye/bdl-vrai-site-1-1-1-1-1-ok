@@ -42,7 +42,6 @@ export default function Blog() {
         setMonths(monthKeys);
         setOpenMonth(monthKeys[0] || null);
       } catch (error) {
-        console.error('Erreur lors du chargement des articles:', error);
       } finally {
         setIsLoading(false);
       }
