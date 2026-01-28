@@ -25,14 +25,20 @@ export const LazyLottieIframe: React.FC<LazyLottieIframeProps> = ({
       (entries) => {
         entries.forEach((entry) => {
           if (entry.isIntersecting) {
-            setIsVisible(true);
+            const start = () => setIsVisible(true);
+            const idle = (window as unknown as { requestIdleCallback?: (cb: () => void, opts?: { timeout?: number }) => number }).requestIdleCallback;
+            if (idle) {
+              idle(start, { timeout: 500 });
+            } else {
+              setTimeout(start, 200);
+            }
             observer.disconnect();
           }
         });
       },
       { 
         threshold,
-        rootMargin: '100px'
+        rootMargin: '0px'
       }
     );
 

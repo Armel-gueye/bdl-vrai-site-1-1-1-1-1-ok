@@ -429,7 +429,14 @@ export default function Home() {
               {/* Project 1: Large Card */}
               <AnimatedImage delay={0.1}>
                 <div className="relative col-span-full md:col-span-2 lg:col-span-2 row-span-2 rounded-2xl overflow-hidden group border border-border">
-                  <img src="https://i.postimg.cc/FFfVTn6k/msedge-Gf5hg-DL269.jpg" alt="Project 1" className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-500" />
+                  <img
+                    src="https://i.postimg.cc/FFfVTn6k/msedge-Gf5hg-DL269.jpg"
+                    alt="Project 1"
+                    className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-500"
+                    loading="lazy"
+                    decoding="async"
+                    fetchpriority="low"
+                  />
                   <div className="absolute bottom-5 right-5">
                     <Link to="/realisations" className="bg-white/95 hover:bg-white text-foreground px-4 py-2 rounded-lg flex items-center text-sm font-semibold shadow-lg transition-all hover:scale-105">
                       Voir le projet <ArrowRight className="ml-2 w-4 h-4" />
@@ -444,7 +451,11 @@ export default function Home() {
                   <img
                     src="https://i.postimg.cc/85dNGbK6/msedge-m-T1m1b-Md-NY.png"
                     alt="Project 2"
-                    className="w-full h-full object-cover rounded-2xl group-hover:scale-105 transition-transform duration-500" />
+                    className="w-full h-full object-cover rounded-2xl group-hover:scale-105 transition-transform duration-500"
+                    loading="lazy"
+                    decoding="async"
+                    fetchpriority="low"
+                  />
 
                   <div className="absolute bottom-4 right-4">
                     <Link to="/realisations" className="bg-white/95 hover:bg-white text-foreground px-3 py-2 rounded-lg flex items-center text-xs font-semibold shadow-lg transition-all hover:scale-105">
@@ -460,7 +471,11 @@ export default function Home() {
                   <img
                     src="https://i.postimg.cc/59kk0ChT/msedge-o-Yx9ORu-STc.png"
                     alt="Project 3"
-                    className="w-full h-full object-cover rounded-2xl group-hover:scale-105 transition-transform duration-500" />
+                    className="w-full h-full object-cover rounded-2xl group-hover:scale-105 transition-transform duration-500"
+                    loading="lazy"
+                    decoding="async"
+                    fetchpriority="low"
+                  />
 
                   <div className="absolute bottom-4 right-4">
                     <Link to="/realisations" className="bg-white/95 hover:bg-white text-foreground px-3 py-2 rounded-lg flex items-center text-xs font-semibold shadow-lg transition-all hover:scale-105">

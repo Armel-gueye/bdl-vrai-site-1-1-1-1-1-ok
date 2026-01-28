@@ -147,7 +147,16 @@ export const StitchHero: React.FC = () => {
                         </div>
                         <div className="relative w-full aspect-[4/5] max-w-md shadow-2xl rounded-[2.5rem] overflow-hidden group mr-28 animate-scale-in" style={{ animationDelay: '800ms' }}>
                             <div className="absolute inset-0 bg-gradient-to-t from-black/60 to-transparent z-10 pointer-events-none"></div>
-                            <img alt="Abstract digital neural network nodes glowing" className="h-full w-full object-cover object-center transform transition-transform duration-1000 group-hover:scale-105" src="https://i.postimg.cc/t41tBmDr/Image-robot-de-Binko-O-Digital-Lab.webp" />
+                            <img
+                                alt="Abstract digital neural network nodes glowing"
+                                className="h-full w-full object-cover object-center transform transition-transform duration-1000 group-hover:scale-105"
+                                src="https://i.postimg.cc/t41tBmDr/Image-robot-de-Binko-O-Digital-Lab.webp"
+                                width={800}
+                                height={1000}
+                                loading="eager"
+                                decoding="async"
+                                fetchpriority="high"
+                            />
                             <div className="absolute bottom-0 left-0 p-8 z-20">
                                 <span className="block text-xs font-bold uppercase tracking-widest text-white/90 mb-1">
                                     BinkoO Digital Lab

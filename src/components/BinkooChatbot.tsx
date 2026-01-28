@@ -564,7 +564,13 @@ export const BinkooChatbot: React.FC = () => {
         {/* Header */}
         <div id="binkoo-chat-header">
           <div id="binkoo-chat-header-content">
-            <img src="https://i.postimg.cc/VLRRc9K5/IMG-1941.jpg" alt="Bino" />
+            <img
+              src="https://i.postimg.cc/VLRRc9K5/IMG-1941.jpg"
+              alt="Bino"
+              loading="lazy"
+              decoding="async"
+              fetchpriority="low"
+            />
             <div>
               <h3>Bino</h3>
               <p>BinkoO Digital Lab</p>

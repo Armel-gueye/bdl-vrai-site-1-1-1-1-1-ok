@@ -195,10 +195,23 @@ export const Carousel: React.FC<CarouselProps> = ({
 
   useEffect(() => {
     if (autoplay && !isHovered) {
-      const interval = setInterval(() => {
-        handleNext();
-      }, autoplayDelay);
-      return () => clearInterval(interval);
+      let intervalId: number | undefined;
+      const startInterval = () => {
+        intervalId = window.setInterval(() => {
+          handleNext();
+        }, autoplayDelay);
+      };
+      const idle = (window as unknown as { requestIdleCallback?: (cb: () => void, opts?: { timeout?: number }) => number }).requestIdleCallback;
+      if (idle) {
+        idle(() => startInterval(), { timeout: 1000 });
+      } else {
+        setTimeout(() => startInterval(), 400);
+      }
+      return () => {
+        if (intervalId) {
+          clearInterval(intervalId);
+        }
+      };
     }
   }, [autoplay, autoplayDelay, isHovered, currentIndex]);
 
